@@ -6,32 +6,6 @@
     <meta charset="utf-8">
   </head>
   <body>
-    <script>
-      window.onload = locationApiCall();
-      // Note: This example requires that you consent to location sharing when
-      // prompted by your browser. If you see the error "The Geolocation service
-      // failed.", it means you probably did not give permission for the browser to
-      // locate you.
-      function locationApiCall() {
-        // Try HTML5 geolocation.
-        if(navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-          var lat = position.coords.latitude;
-          var lng = position.coords.longitude;
-          window.location.href = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+lat+','+lng+'&radius=1500&key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM';
-          });
-          } else {
-          // Browser doesn't support Geolocation
-          // handle no location found
-        }
-      }
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-      }
-    </script>
+  <p>Your ip address is <strong>{{ result }}</strong></p>
   </body>
 </html>
