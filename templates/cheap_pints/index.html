@@ -6,6 +6,20 @@ Home
 {% endblock %}
 
 {% block body_block %}
+<script>
+    function locationData(){
+        navigator.geolocation.getCurrentPosition(foundLocation, noLocation, {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
+        function foundLocation(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var userLocation = lat + ',' + lon;
+            window.location.href = 'geo/'+userLocation+'/';
+            };
+        };
+    function noLocation(){
+        alert("no")
+    }
+</script>
 <div class="jumbotron p-4">
     <div class="container">
         <h1 class="jumbotron-heading">Cheap Pints</h1>
@@ -24,6 +38,7 @@ Home
                 <div class="card-body">
                     <blockquote class="blockquote">
                         <p>Choose Your Location</p>
+                        <a class="p-2 ml-2 btn btn-light" onclick='locationData();';> Show Bars</a>
                         <footer class="card-blockquote"><cite title="Source title">Sebastian Romero</cite></footer>
                     </blockquote>
                 </div>
