@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <title>
+        Cheap Pints - {% block title_block %} Cheap Pints Near Me!{% endblock %}
+    </title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
+
+    {% comment %} Star Ratings CSS {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}"> {% endcomment %}
+
+    {% comment %} <link rel="stylesheet" href="{% static 'css/nutrition_facts.css' %}"> {% endcomment %}
+
+    {% comment %} A block so other templates can insert custom CSS in the correct place {% endcomment %}
+    {% block css %}
+    {% endblock %}
+
+</head>
+
+<body class="bg-secondary">
+
+    <div
+        class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-info text-light box-shadow">
+
+        {% comment %} App title, links to home {% endcomment %}
+        <h5 class="my-0 mr-md-auto font-weight-bold d-flex">
+            <a class="text-dark" href="/cheap_pints/">
+                Cheap Pints
+            </a>
+        </h5>
+
+        <nav class="my-2 my-md-0 mr-md-3">
+
+            {% comment %} Sign up and Login Space - dynamic to show 'log out' if user is logged in and
+            'login' and 'sign up' if user is not logged in {% endcomment %}
+            {% if user.is_authenticated %}
+            <a class="p-2 ml-2 btn btn-outline-light" href="">Logout</a>
+            {% else %}
+
+            <a class="p-2 ml-2 btn btn-light" href=""> Login</a>
+
+            <a class="p-2 ml-2 btn btn-outline-light"
+                href=""> Sign up</a>
+
+            {% endif %}
+        </nav>
+    </div>
+
+    {% comment %} Container wrapper with a nice white offset to contrast with grey {% endcomment %}
+    <div class="container bg-light h-100 py-4">
+        <main>
+            {% comment %} Header block for other templates {% endcomment %}
+            <h1 class="pb-2 my-4 mx-2 border-bottom">
+                {% block header_block %} {% endblock %}
+            </h1>
+
+            {% comment %} Body block for other templates {% endcomment %}
+            {% block body_block %}
+            {% endblock %}
+        </main>
+    </div>
+
+    {% comment %} Footer for other links etc. {% endcomment %}
+    <footer class="pt-4 pt-md-5 bg-secondary">
+        <div class="row d-flex flex-row justify-content-around px-2 px-md-5">
+            <div>
+                <h5 class="text-white">Features</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-white" href="">Add Pint Price</a>
+                    </li>
+                    <!-- If the user is logged in, display Logout option-->
+                    {% if user.is_authenticated %}
+                    <li><a class="text-white" href="">Logout</a>
+                    </li>
+
+                    {% else %}
+                    <!-- If there is no user logged in, display Login and Register options-->
+                    <li><a class="text-white" href="">Login</a></li>
+                    <li><a class="text-white" href="">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            {% comment %} Potentially add other footer functionality here {% endcomment %}
+
+            {% comment %} <div>
+                <h5>Resources</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Resource</a></li>
+                </ul>
+            </div>
+            <div>
+                <h5>About</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Team</a></li>
+                </ul>
+            </div> {% endcomment %}
+
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+
+    {% comment %} Start Ratings JS {% endcomment %}
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+
+    {% comment %} A block so other templates can insert javascript to the correct place and not inline {% endcomment %}
+    {% block js %}
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+{% extends 'cheap_pints/base.html' %}
+{% load staticfiles %}
+
+{% comment %} Include CSS and JS specific to this page (selectize.js / add_meal) {% endcomment %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/selectize.js/selectize.css' %}">
+<link rel="stylesheet" href="{% static 'css/selectize.js/selectize.bootstrap3.css' %}">
+{% comment %} <link rel="stylesheet" href="{% static 'css/all_meals.css' %}"> {% endcomment %}
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/selectize.js/selectize.min.js' %}"></script>
+<script>
+</script>
+{% endblock %}
+
+{% block title_block %}
+Bars Near Me
+{% endblock %}
+
+{% block header_block %}
+Bars Near Me
+{% endblock %}
+
+{% block body_block %}
+
+{% comment %} If the user has meals, display everything {% endcomment %}
+{% if meals %}
+<div class="row">
+    {% comment %} Tags search bar. Changes order depending on device {% endcomment %}
+    <div class="col-xs-12 col-md-4 order-2 order-md-1">
+        <div class="card">
+            <h2 class="card-header">Meal Tags</h2>
+            {% comment %} Custom CSS to force show scroll if OS tries to hide by default {% endcomment %}
+            <div class="tag-list list-group">
+                {% for t in tags %}
+                {% comment %} URL set up so will toggle back to main page if tag is already active {% endcomment %}
+                <a href="{% if username %}{% url 'macro_mate:my_meals' %}{% else %}{% url 'macro_mate:meals' %}{% endif %}{% if t.name != tag.name %}{{t.slug}}{% endif %}"
+                    class="list-group-item list-group-item-action {% if t.name == tag.name %}active{% endif %}">{{t.name}}</a>
+                {% endfor %}
+            </div>
+            <p class="card-text border-top"><small class="ml-3 text-muted"> Click to select / deselect</small></p>
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-md-8 order-1 order-md-2">
+
+        {% comment %} Get most recent meals in big bold boxes {% endcomment %}
+        <h2 class="my-3">{% if username %}{{username|title}}'s {% endif %}Hot New {% if tag %}{{tag|title}}
+            {% endif %}Meals
+        </h2>
+
+        <div class="row">
+            {% for meal in recent_meals %}
+            <div class="col-6 col-lg-4 mb-4">
+                <div class="card-deck">
+                    <a class="card-link" href="{% url 'macro_mate:meal' %}{{meal.id}}">
+                        <div class="card">
+                            <img class="card-img-top"
+                                src="{% if meal.image %}{{MEDIA_URL}}{{meal.image}}{% else %}{% static 'images/placeholder.png' %}{% endif %}"
+                                alt="{{meal.name}} image">
+                            <div class="card-body">
+                                <h3 class="h5 card-title">{{meal.name}}</h3>
+                                <p class="card-text">by: {{meal.owner}}</p>
+                                <div>
+                                    {% for tag in meal.tags.names %}
+                                    <span class="badge badge-info">{{tag}}</span>
+                                    {% endfor %}
+                                </div>
+                                <p class="card-text"><small class="text-muted">Last updated
+                                        {{meal.modified_date}}</small>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% comment %} Separate meals by category, using another template {% endcomment %}
+{% for category in categories %}
+{% include 'macro_mate/meal_list.html' with title=category.name tag=tag meals=category.meals %}
+{% endfor %}
+
+
+{% else %}
+{% comment %} If the user doesn't have meals, prompt a message {% endcomment %}
+<p>You have no meals! Please add one with the link above, or search other users' meals! </p>
+{% endif %}
+
+
+
+{% endblock %}

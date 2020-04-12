@@ -1,0 +1,35 @@
+{% extends 'cheap_pints/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Home
+{% endblock %}
+
+{% block body_block %}
+<div class="jumbotron p-4">
+    <div class="container">
+        <h1 class="jumbotron-heading">Cheap Pints</h1>
+        <div>
+            <h2 class="h2">
+                Find Cheap Pints Near Me!
+            </h2>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <blockquote class="blockquote">
+                        <p>Choose Your Location</p>
+                        <footer class="card-blockquote"><cite title="Source title">Sebastian Romero</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
