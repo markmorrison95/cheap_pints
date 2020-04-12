@@ -1,0 +1,10 @@
+name: find_my_pint
+channels:
+  - defaults
+dependencies:
+  - python=3.7.5
+  - django==2.1.5
+  - pillow
+  - requests
+  - geoip
+prefix: /Users/markmorrison/anaconda3/envs/find_my_pint
