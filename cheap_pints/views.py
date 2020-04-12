@@ -13,3 +13,9 @@ def barList(request):
     response = render(request, TEMPLATE, context={})
     return response
 
+
+def geoLoc(request):
+    TEMPLATE = 'cheap_pints/geolocation.html'
+    response = render(request, TEMPLATE, context={})
+    return response
+
