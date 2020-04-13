@@ -10,49 +10,40 @@ def index(request):
     response = render(request, TEMPLATE, context={})
     return response
 
-def barList(request):
+def barList(request, value):
     TEMPLATE = 'cheap_pints/bars.html'
-    response = render(request, TEMPLATE, context={})
-    return response
-
-def geoLoc(request, value):
+    template_name = 'cheap_pints/bars.html'
     key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
     access_key = '397013fc76d5de24d0cc0b04b52e2aa6'
     latlng = value
-    response2 = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+latlng+'&radius=1500&key='+key)
+    response2 = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ latlng +'&&type=bar&rankby=distance&key='+key)
     nearby = response2.json()
-    return render(request, 'cheap_pints/geolocation.html', {
-        'result': nearby['results']
-    })
+    print(nearby)
+    place_ids = extract_values(nearby, 'place_id')
+    bars = []
+    for place in place_ids:
+        bars += PintPrice.objects.filter(googleId=place)
+    context = {'bars':bars}
+    return render(request, template_name, context)
 
 
-class allBars(TemplateView):
-    """ A view for viewing all meals """
 
-    template_name = 'cheap_pints/bars.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
+def extract_values(obj, key):
+    """Pull all values of specified key from nested JSON."""
+    arr = []
+    def extract(obj, arr, key):
+        """Recursively search for values of key in JSON tree."""
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if isinstance(v, (dict, list)):
+                    extract(v, arr, key)
+                elif k == key:
+                    arr.append(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                extract(item, arr, key)
+        return arr
 
-    def get_context_data(self):
-        bars = PintPrice.objects.all().order_by('price')
-        # Get tag slug (has to be this way for TemplateView)
-        # tag_slug = self.kwargs.get('tag_slug', None)
-
-        # if(tag_slug):
-        #     try:
-        #         # Filter meals by tag
-        #         tag = Tag.objects.get(slug=tag_slug)
-        #         context['tag'] = tag
-        #         meals = meals.filter(tags__name__in=[tag.name])
-        #     except Tag.DoesNotExist:
-        #         # Signal in context_dict so an error message can be displayed
-        #         # Will just display every meal regardless
-        #         context['tag_slug'] = tag_slug
-        #         context['tag_error'] = True
-
-        # Pin most recent meals
-        context = {'bars':bars}
-
-        return context
-
+    results = extract(obj, arr, key)
+    return results
