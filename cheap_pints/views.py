@@ -16,6 +16,7 @@ def barList(request, value):
     key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
     access_key = '397013fc76d5de24d0cc0b04b52e2aa6'
     latlng = value
+    # latlng = str('55.873694,-4.283646') value for west end, use to force search area
     response2 = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ latlng +'&&type=bar&rankby=distance&key='+key)
     nearby = response2.json()
     print(nearby)
