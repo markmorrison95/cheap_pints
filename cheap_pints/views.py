@@ -3,6 +3,7 @@ from django.views import View
 from django.views.generic.base import TemplateView
 from pip._vendor import requests
 from cheap_pints.models import PintPrice
+from cheap_pints.forms import PintPriceForm
 
 # Create your views here.
 def index(request):
@@ -26,9 +27,6 @@ def barList(request, value):
     context = {'bars':bars}
     return render(request, template_name, context)
 
-
-
-
 def extract_values(obj, key):
     """Pull all values of specified key from nested JSON."""
     arr = []
@@ -47,3 +45,34 @@ def extract_values(obj, key):
 
     results = extract(obj, arr, key)
     return results
+
+class AddBar(View):
+    """ A view for adding a meal to the database """
+
+    TEMPLATE = "cheap_pints/addBar.html"
+
+    # @method_decorator(login_required)
+    def get(self, request, meal_id_slug=None):
+        """ Display the form for adding / editing a meal """
+
+        # If the user is trying to edit a pre-existing meal
+        # if(bar_id_slug):
+        #     # 404 if no meal found
+        #     mealget = get_object_or_404(Meal, id=meal_id_slug)
+        #     user = request.user
+
+        #     # Forbidden page if they are not the owner of the meal
+        #     # to avoid hax...
+        #     if (mealget.owner != user.userprofile):
+        #         return HttpResponseForbidden()
+        #     else:
+                # Otherwise, fill the form in with the meal and return
+
+                # Parse the tag fields to a comma separated list to populate
+                # the input field. Necessary for the JQuery plugin
+
+        form = PintPriceForm()
+
+        return render(request, self.TEMPLATE, context={
+            'form': form,
+        })

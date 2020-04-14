@@ -13,7 +13,8 @@ class PintPrice(models.Model):
 
     # Reference Fields
     # ----------------
-    googleId = models.CharField(max_length=NAME_MAX_LENGTH, primary_key=True)
+    bar_id = models.AutoField(primary_key=True,auto_created=True)
+    googleId = models.CharField(max_length=NAME_MAX_LENGTH)
     barName = models.CharField(max_length=NAME_MAX_LENGTH)
     price = models.FloatField(blank=False)
     price_unit = models.CharField(max_length=UNIT_MAX_LENGTH,default=PRICE_DEFAULT_UNIT)

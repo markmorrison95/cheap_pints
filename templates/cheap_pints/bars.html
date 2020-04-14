@@ -1,12 +1,5 @@
 {% extends 'cheap_pints/base.html' %}
 {% load staticfiles %}
-
-{% comment %} Include CSS and JS specific to this page (selectize.js / add_meal) {% endcomment %}
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/selectize.js/selectize.css' %}">
-<link rel="stylesheet" href="{% static 'css/selectize.js/selectize.bootstrap3.css' %}">
-{% endblock %}
-
 {% block js %}
 <script src="{% static 'js/selectize.js/selectize.min.js' %}"></script>
 <script>
@@ -34,12 +27,14 @@ Bars Near Me
                     {% comment %} <a class="card-link" href="{% url 'macro_mate:meal' %}{{meal.id}}"> {% endcomment %}
                         <div class="card">
                             <img class="card-img-top"
-                            
-                                src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+{{bar.image_reference}}+"&key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM"
-                                alt="{{bar.barName}} image">
+                                {% if bar.image_reference %}
+                                src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ bar.image_reference }}&key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM"
+                                {% else %}
+                                src="https://cdn.pixabay.com/photo/2017/05/05/19/33/beer-2288121_1280.jpg"
+                                {% endif %}>
                             <div class="card-body">
                                 <h3 class="h5 card-title">{{bar.barName}}</h3>
-                                <p class="card-text">Pint Price: {{bar.price_unit}}{{bar.price}}</p>
+                                <p class="card-text">Pint Price: {{bar.price_unit}}{{bar.price |floatformat:2 }}</p>
                                 <div>
                                     <span class="badge badge-info">{{price}}</span>
                                 </div>

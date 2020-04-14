@@ -1,0 +1,82 @@
+{% extends 'cheap_pints/base.html' %}
+{% load staticfiles %}
+{% comment %} Add custom filters for form CSS below {% endcomment %}
+
+{% comment %} Include CSS and JS specific to this page (selectize.js / add_meal) {% endcomment %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/selectize.js/selectize.css' %}">
+<link rel="stylesheet" href="{% static 'css/selectize.js/selectize.bootstrap3.css' %}">
+{% endblock %}
+
+{% comment %} Page Title {% endcomment %}
+{% block title_block %}
+Add Bar
+{% endblock %}
+
+{% comment %} Page Header {% endcomment %}
+{% block header_block %}
+Add New Bar
+{% endblock %}
+
+{% block body_block %}
+
+{% comment %} Form encapsulates whole view. Responsive layout. {% endcomment %}
+<form id="new_bar_form" enctype="multipart/form-data" method="post"
+    action="">
+    {% csrf_token %}
+
+    {% comment %} Hidden form fields {% endcomment %}
+    {% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+
+    <div class="row">
+        {% comment %} Form on left, except Image {% endcomment %}
+        <div class="col-12 col-md-6">
+            <h2 class="pb-2 my-4 mx-2 border-bottom">
+                Information
+            </h2>
+            {% csrf_token %}
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            {% for field in form.visible_fields %}
+            <br>
+            <div>
+                {{ field.label }}
+                {{ field.errors }}
+                {{ field }}
+            </div>
+            {% endfor %}
+        </div>
+
+        {% comment %} Image and analysis on right {% endcomment %}
+        <div class="col-12 col-md-6">
+            <h2 class="pb-2 my-4 mx-2 border-bottom">
+                Image
+            </h2>
+
+            <img id="image_holder" src="{% static 'images/placeholder.png' %}" class="img-fluid" alt="Responsive image">
+            <div class="form-group ">
+                {% for error in form.image.errors %}
+                <div>
+                    <span class="text-danger"> {{error}} </span>
+                </div>
+                {% endfor %}
+                {{form.image}}
+            </div>
+        </div>
+
+    </div>
+
+    {% comment %} Buttons for form - Again, heavily reliant on JS {% endcomment %}
+    <div class="row my-4">
+    {% comment %} <div class="col-12 col-md-6"/> {% endcomment %}
+    <div class="col-6 col-md-6 align-center">
+        <input id="submit" class="btn btn-lg btn-block btn-primary" type="submit" name="submit" value="Add Bar" />
+        </div>
+    </div>
+
+</form>
+
+{% endblock %}
