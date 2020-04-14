@@ -34,7 +34,8 @@ Bars Near Me
                     {% comment %} <a class="card-link" href="{% url 'macro_mate:meal' %}{{meal.id}}"> {% endcomment %}
                         <div class="card">
                             <img class="card-img-top"
-                                src="{% if bar.image %}{{MEDIA_URL}}{{bar.image}}{% else %}{% static 'images/placeholder.png' %}{% endif %}"
+                            
+                                src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+{{bar.image_reference}}+"&key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM"
                                 alt="{{bar.barName}} image">
                             <div class="card-body">
                                 <h3 class="h5 card-title">{{bar.barName}}</h3>

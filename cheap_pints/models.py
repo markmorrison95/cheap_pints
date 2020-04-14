@@ -17,6 +17,7 @@ class PintPrice(models.Model):
     barName = models.CharField(max_length=NAME_MAX_LENGTH)
     price = models.FloatField(blank=False)
     price_unit = models.CharField(max_length=UNIT_MAX_LENGTH,default=PRICE_DEFAULT_UNIT)
+    image_reference = models.CharField(max_length=URL_MAX_LENGTH, blank=True)
     # Date and time created
     created_date = models.DateTimeField(auto_now_add=True)
     # The owning user
