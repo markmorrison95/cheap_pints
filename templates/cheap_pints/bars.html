@@ -28,7 +28,7 @@ Bars Near Me
                         <div class="card">
                             <img class="card-img-top"
                                 {% if bar.image_reference %}
-                                src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ bar.image_reference }}&key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM"
+                                src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ bar.image_reference }}&key={{ api_key }}"
                                 {% else %}
                                 src="https://cdn.pixabay.com/photo/2017/05/05/19/33/beer-2288121_1280.jpg"
                                 {% endif %}>
