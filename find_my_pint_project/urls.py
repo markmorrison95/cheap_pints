@@ -21,5 +21,5 @@ from cheap_pints import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('cheap_pints/', include('cheap_pints.urls')),    
+    path('cheap_pints/', include('cheap_pints.urls')),  
 ]

@@ -11,6 +11,11 @@ def index(request):
     response = render(request, TEMPLATE, context={})
     return response
 
+def google(request):
+    TEMPLATE = 'cheap_pints/geolocation.html'
+    response = render(request, TEMPLATE, context={})
+    return response
+
 def barList(request, value):
     TEMPLATE = 'cheap_pints/bars.html'
     template_name = 'cheap_pints/bars.html'
@@ -19,12 +24,12 @@ def barList(request, value):
     # latlng = str('55.873694,-4.283646') #value for bank street, use to force search area
     response2 = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ latlng +'&&type=bar&rankby=distance&key='+key)
     nearby = response2.json()
-    print(nearby)
     place_ids = extract_values(nearby, 'place_id')
     bars = []
     for place in place_ids:
         bars += PintPrice.objects.filter(googleId=place)
-    context = {'bars':bars}
+    context = {'bars':bars,
+            'api_key':key}
     return render(request, template_name, context)
 
 def extract_values(obj, key):
