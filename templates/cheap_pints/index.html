@@ -7,18 +7,20 @@ Home
 
 {% block body_block %}
 <script>
-    function locationData(){
-        navigator.geolocation.getCurrentPosition(foundLocation, noLocation, {maximumAge:60000, timeout:5000, enableHighAccuracy:true});
-        function foundLocation(position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const userLocation = lat + ',' + lon;
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    alert("Location is not supported by this browser.");
+                }
+            }
+
+        function showPosition(position) {
+            var lat = position.coords.latitude; 
+            var lng = position.coords.longitude;
+            var userLocation = ''+lat+','+lng; 
             window.location.href = 'bars/'+userLocation+'/';
-            };
-        };
-    function noLocation(){
-        alert("Location Not Found, Try Again!")
-    }
+                }
 </script>
 <div class="jumbotron p-4">
     <div class="container">
@@ -38,7 +40,7 @@ Home
                 <div class="card-body">
                     <blockquote class="blockquote">
                         <p>Choose Your Location</p>
-                        <button type="button" class="btn btn-primary" onclick="locationData();">Use Location</button>
+                        <button type="button" class="btn btn-primary" onclick="getLocation();">Use Location</button>
                         <footer class="card-blockquote"><cite title="Source title">Sebastian Romero</cite></footer>
                     </blockquote>
                 </div>

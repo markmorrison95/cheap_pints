@@ -25,10 +25,10 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'i(&#s!47v-&w=aov98-gr_=-70@4_7s-z16c!frdvqt!-s2yuj'
 
-google_key = None
-with open('google_places.key') as f:
-    key = f.read().strip()
-GOOGLE_KEY = key
+# google_key = None
+# with open('google_places.key') as f:
+#     key = f.read().strip()
+# GOOGLE_KEY = key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
