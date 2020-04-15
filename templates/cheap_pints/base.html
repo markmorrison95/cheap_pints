@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="icon" href="{% static 'images/icon.png' %}">
     <title>
         Cheap Pints - {% block title_block %} Cheap Pints Near Me!{% endblock %}
     </title>
@@ -26,11 +26,12 @@
 <body class="bg-secondary">
 
     <div
-        class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-info text-light box-shadow">
+        class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-dark text-light box-shadow">
 
         {% comment %} App title, links to home {% endcomment %}
+        <img src="{% static 'images/icon.png' %}" width="65" height="65"/>
         <h2 class="my-0 mr-md-auto font-weight-bold d-flex">
-            <a class="text-dark" href="/cheap_pints/">
+            <a class="text-white" href="/cheap_pints/">
                 Cheap Pints
             </a>
         </h2>

@@ -7,7 +7,7 @@ Home
 
 {% block body_block %}
 <script>
-            function getLocation() {
+        function getLocation() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(showPosition);
                 } else {
@@ -20,7 +20,19 @@ Home
             var lng = position.coords.longitude;
             var userLocation = ''+lat+','+lng; 
             window.location.href = 'bars/'+userLocation+'/';
-                }
+        }
+
+        function getCoordinates(){
+            var address = document.getElementById("postcodeInputBox").value;
+            fetch("https://maps.googleapis.com/maps/api/geocode/json?address="+address+"&key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM")
+            .then(response => response.json()).then(function(data){
+                    alert(data);
+                    var lat = data['lat'];
+                    var lng = data['lng'];
+                    var userLocation = lat+','+lng; 
+                    window.location.href = 'bars/'+userLocation+'/';
+            })
+        }
 </script>
 <div class="jumbotron p-4">
     <div class="container">
@@ -38,10 +50,21 @@ Home
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
+                    <div>
                     <blockquote class="blockquote">
                         <p>Choose Your Location</p>
-                        <button type="button" class="btn btn-primary" onclick="getLocation();">Use Location</button>
-                        <footer class="card-blockquote"><cite title="Source title">Sebastian Romero</cite></footer>
+                        <button type="button" class="btn btn-primary" onclick="getLocation();">Use Current Location</button>
+                        </div>
+                        </br>
+                        <div>
+                        <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">PostCode</label>
+                            <input type="PostCode" class="form-control" id="postcodeInputBox" aria-describedby="postCodeHelp" placeholder="Enter Your Postcode for Nearby Bars">
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="getCoordinates();">Submit</button>
+                        </form>
+                        </div>
                     </blockquote>
                 </div>
             </div>
