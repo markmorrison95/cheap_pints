@@ -19,6 +19,7 @@ def barList(request, value):
     # latlng = str('55.873694,-4.283646') #value for bank street, use to force search area
     response2 = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ latlng +'&&type=bar&rankby=distance&key='+key)
     nearby = response2.json()
+    print(nearby)
     place_ids = extract_values(nearby, 'place_id')
     bars = []
     for place in place_ids:
