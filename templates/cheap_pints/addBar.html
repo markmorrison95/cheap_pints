@@ -3,10 +3,6 @@
 {% comment %} Add custom filters for form CSS below {% endcomment %}
 
 {% comment %} Include CSS and JS specific to this page (selectize.js / add_meal) {% endcomment %}
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/selectize.js/selectize.css' %}">
-<link rel="stylesheet" href="{% static 'css/selectize.js/selectize.bootstrap3.css' %}">
-{% endblock %}
 
 {% comment %} Page Title {% endcomment %}
 {% block title_block %}
@@ -17,67 +13,6 @@ Add Bar
 {% block header_block %}
 Add New Bar
 {% endblock %}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM&libraries=places">
-
-    var input = document.getElementById('pac-input');
-    var autocomplete = new google.maps.places.Autocomplete(input);
-
-      autocomplete.setFields(
-      ['address_components', 'geometry', 'icon', 'name']);
-
-    autocomplete.addListener('place_changed', function() {
-
-    var place = autocomplete.getPlace();
-    if (!place.geometry) {
-      // User entered the name of a Place that was not suggested and
-      // pressed the Enter key, or the Place Details request failed.
-      alert("No details available for input: '" + place.name + "'");
-    }
-
-    // If the place has a geometry, then present it on a map.
-    if (place.geometry.viewport) {
-    } else {
-    }
-    alert(place.geometry.location);
-    marker.setVisible(true);
-
-    var address = '';
-    if (place.address_components) {
-      address = [
-        (place.address_components[0] && place.address_components[0].short_name || ''),
-        (place.address_components[1] && place.address_components[1].short_name || ''),
-        (place.address_components[2] && place.address_components[2].short_name || '')
-      ].join(' ');
-    }
-
-    infowindowContent.children['place-icon'].src = place.icon;
-    infowindowContent.children['place-name'].textContent = place.name;
-    infowindowContent.children['place-address'].textContent = address;
-    infowindow.open(map, marker);
-  });
-
-  // Sets a listener on a radio button to change the filter type on Places
-  // Autocomplete.
-  function setupClickListener(id, types) {
-    var radioButton = document.getElementById(id);
-    radioButton.addEventListener('click', function() {
-      autocomplete.setTypes(types);
-    });
-  }
-
-  setupClickListener('changetype-all', []);
-  setupClickListener('changetype-address', ['address']);
-  setupClickListener('changetype-establishment', ['establishment']);
-  setupClickListener('changetype-geocode', ['geocode']);
-
-  document.getElementById('use-strict-bounds')
-      .addEventListener('click', function() {
-        console.log('Checkbox clicked! New state=' + this.checked);
-        autocomplete.setOptions({strictBounds: this.checked});
-      });
-}
-
-</script>
 
 {% block body_block %}
 
@@ -91,14 +26,10 @@ Add New Bar
     {{ hidden }}
     {% endfor %}
 
-    <div id="pac-container">
-    <input id="pac-input" type="text"
-        placeholder="Enter a location">
-  </div>
 
     <div class="row">
         {% comment %} Form on left, except Image {% endcomment %}
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-8">
             <h2 class="pb-2 my-4 mx-2 border-bottom">
                 Information
             </h2>
@@ -116,23 +47,6 @@ Add New Bar
             {% endfor %}
         </div>
 
-        {% comment %} Image and analysis on right {% endcomment %}
-        <div class="col-12 col-md-6">
-            <h2 class="pb-2 my-4 mx-2 border-bottom">
-                Image
-            </h2>
-
-            <img id="image_holder" src="{% static 'images/placeholder.png' %}" class="img-fluid" alt="Responsive image">
-            <div class="form-group ">
-                {% for error in form.image.errors %}
-                <div>
-                    <span class="text-danger"> {{error}} </span>
-                </div>
-                {% endfor %}
-                {{form.image}}
-            </div>
-        </div>
-
     </div>
 
     {% comment %} Buttons for form - Again, heavily reliant on JS {% endcomment %}
@@ -144,5 +58,37 @@ Add New Bar
     </div>
 
 </form>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM&libraries=places&callback=initAutocomplete"
+                async defer></script>
+<script>
+var autocomplete;
+
+function initAutocomplete() {
+   autocomplete = new google.maps.places.Autocomplete((document.getElementById('id_barName')),
+          {types: ['establishment']}
+   );
+   autocomplete.setFields(
+            ['place_id','name']);
+
+autocomplete.addListener('place_changed', function() {
+          var place = autocomplete.getPlace();
+          if (!place.name) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+          }
+          // If the place has a geometry, then present it on a map.
+          var id = place.place_id
+          var name = place.name;
+          name = name.split(',')[0]
+          document.getElementById('id_barName').value=name;
+          document.getElementById('id_googleId').value=name;
+})
+}
+
+
+</script>
 
 {% endblock %}

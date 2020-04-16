@@ -6,6 +6,7 @@ class PintPriceForm(forms.ModelForm):
     """The form for handling new bar input"""
      
     barName = forms.CharField(help_text="Please enter the Bar Name.",
+                             widget=forms.TextInput(attrs={'placeholder': 'Search Bar'}),
                             max_length=PintPrice.NAME_MAX_LENGTH,
                            label="Bar Name:",
                            required=True)
