@@ -53,7 +53,7 @@ Add New Bar
     <div class="row my-4">
     {% comment %} <div class="col-12 col-md-6"/> {% endcomment %}
     <div class="col-6 col-md-6 align-center">
-        <input id="submit" class="btn btn-lg btn-block btn-primary" type="submit" name="submit" value="Add Bar" />
+        <input id="submit" class="btn btn-lg btn-block btn-primary" type="submit" name="submit" value="Add Bar" disabled />
         </div>
     </div>
 
@@ -85,6 +85,7 @@ autocomplete.addListener('place_changed', function() {
           name = name.split(',')[0]
           document.getElementById('id_barName').value=name;
           document.getElementById('id_googleId').value=name;
+          document.getElementById("submit").disabled = false;
 })
 }
 
