@@ -1,5 +1,5 @@
 from django import forms
-from cheap_pints.models import PintPrice
+from cheap_pints.models import Bars
 
 
 class PintPriceForm(forms.ModelForm):
@@ -7,23 +7,23 @@ class PintPriceForm(forms.ModelForm):
      
     barName = forms.CharField(help_text="Please enter the Bar Name.",
                              widget=forms.TextInput(attrs={'placeholder': 'Search Bar'}),
-                            max_length=PintPrice.NAME_MAX_LENGTH,
+                            max_length=Bars.NAME_MAX_LENGTH,
                            label="Bar Name:",
                            required=True)
 
     price = forms.FloatField(label="Pint Price:",
                                 required=True)
-    price_unit = forms.CharField(initial=PintPrice.PRICE_DEFAULT_UNIT,
+    price_unit = forms.CharField(initial=Bars.PRICE_DEFAULT_UNIT,
                                     required=True)
 
 
-    googleId = forms.CharField(max_length=PintPrice.NAME_MAX_LENGTH, 
+    googleId = forms.CharField(max_length=Bars.NAME_MAX_LENGTH, 
                                     required=True,
                                     widget=forms.HiddenInput)
 
-    image_reference = forms.CharField(max_length=PintPrice.URL_MAX_LENGTH,
+    image_reference = forms.CharField(max_length=Bars.URL_MAX_LENGTH,
                                     widget=forms.HiddenInput)
 
     class Meta:
-        model = PintPrice
+        model = Bars
         fields = ('barName','price', 'price_unit')

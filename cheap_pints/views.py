@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic.base import TemplateView
 from pip._vendor import requests
-from cheap_pints.models import PintPrice
+from cheap_pints.models import Bars
 from cheap_pints.forms import PintPriceForm
 
 # Create your views here.
@@ -27,7 +27,7 @@ def barList(request, value):
     place_ids = extract_values(nearby, 'place_id')
     bars = []
     for place in place_ids:
-        bars += PintPrice.objects.filter(googleId=place)
+        bars += Bars.objects.filter(googleId=place)
     context = {'bars':bars,
             'api_key':key}
     return render(request, template_name, context)

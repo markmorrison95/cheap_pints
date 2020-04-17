@@ -1,4 +1,4 @@
 from django.contrib import admin
-from cheap_pints.models import PintPrice
+from cheap_pints.models import Bars
 # Register your models here.
-admin.site.register(PintPrice)
+admin.site.register(Bars)
