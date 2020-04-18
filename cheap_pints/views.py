@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic.base import TemplateView
 from pip._vendor import requests
-from cheap_pints.models import Bars
+from cheap_pints.models import Bar
 from cheap_pints.forms import PintPriceForm
+from django.urls import reverse
+import json
 
 # Create your views here.
 def index(request):
@@ -27,11 +29,10 @@ def barList(request, value):
     place_ids = extract_values(nearby, 'place_id')
     bars = []
     for place in place_ids:
-        bars += Bars.objects.filter(googleId=place)
+        bars += Bar.objects.filter(googleId=place)
     context = {'bars':bars,
             'api_key':key}
     return render(request, template_name, context)
-
 def extract_values(obj, key):
     """Pull all values of specified key from nested JSON."""
     arr = []
@@ -60,24 +61,37 @@ class AddBar(View):
     def get(self, request, meal_id_slug=None):
         """ Display the form for adding / editing a meal """
 
-        # If the user is trying to edit a pre-existing meal
-        # if(bar_id_slug):
-        #     # 404 if no meal found
-        #     mealget = get_object_or_404(Meal, id=meal_id_slug)
-        #     user = request.user
-
-        #     # Forbidden page if they are not the owner of the meal
-        #     # to avoid hax...
-        #     if (mealget.owner != user.userprofile):
-        #         return HttpResponseForbidden()
-        #     else:
-                # Otherwise, fill the form in with the meal and return
-
-                # Parse the tag fields to a comma separated list to populate
-                # the input field. Necessary for the JQuery plugin
-
         form = PintPriceForm()
 
         return render(request, self.TEMPLATE, context={
             'form': form,
         })
+
+
+    def post(self, request):
+        """ Process the form submitted by the user """
+
+        # If there's a meal slug, supply the instance
+        form = PintPriceForm(request.POST)
+
+        if form.is_valid():
+            bar = form.save(commit=False)
+            key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+            placeId = bar.googleId
+            response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + key)
+            photo = response.json()
+            ref =  extract_values(photo,'photo_reference')
+            bar.image_reference = ref[0]
+            print(ref)
+            bar.save()
+
+            # Redirect to my_meals page
+            return redirect(reverse('cheap_pints:index'))
+
+        else:
+            print(form.errors)
+            return render(request, self.TEMPLATE, context={'form': form})
+
+
+# url to get info from place_id
+        # https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=name,rating,formatted_phone_number&key=YOUR_API_KEY

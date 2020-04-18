@@ -19,13 +19,6 @@ Add New Bar
 {% comment %} Form encapsulates whole view. Responsive layout. {% endcomment %}
 <form id="new_bar_form" enctype="multipart/form-data" method="post"
     action="">
-    {% csrf_token %}
-
-    {% comment %} Hidden form fields {% endcomment %}
-    {% for hidden in form.hidden_fields %}
-    {{ hidden }}
-    {% endfor %}
-
 
     <div class="row">
         {% comment %} Form on left, except Image {% endcomment %}
@@ -37,14 +30,19 @@ Add New Bar
             {% for hidden in form.hidden_fields %}
                 {{ hidden }}
             {% endfor %}
-            {% for field in form.visible_fields %}
             <br>
             <div>
-                {{ field.label }}
-                {{ field.errors }}
-                {{ field }}
+                {{ form.barName.label }}
+                {{ form.barName.errors }}
+                {{ form.barName }}
             </div>
-            {% endfor %}
+            <br>
+            <div>
+                {{ form.price.label }}
+                {{ form.price.errors }}
+                {{ form.price_unit }}
+                {{ form.price }}
+            </div>
         </div>
 
     </div>
@@ -56,6 +54,14 @@ Add New Bar
         <input id="submit" class="btn btn-lg btn-block btn-primary" type="submit" name="submit" value="Add Bar" disabled />
         </div>
     </div>
+    <style>
+    input[id=id_barName] {
+            width: 300px;
+        }
+    input[id=id_price_unit] {
+            width: 25px;
+        }
+    </style>
 
 </form>
 
@@ -69,7 +75,7 @@ function initAutocomplete() {
           {types: ['establishment']}
    );
    autocomplete.setFields(
-            ['place_id','name']);
+            ['place_id','name','photos']);
 
 autocomplete.addListener('place_changed', function() {
           var place = autocomplete.getPlace();
@@ -82,9 +88,10 @@ autocomplete.addListener('place_changed', function() {
           // If the place has a geometry, then present it on a map.
           var id = place.place_id
           var name = place.name;
+          console.log(place.photos);
           name = name.split(',')[0]
           document.getElementById('id_barName').value=name;
-          document.getElementById('id_googleId').value=name;
+          document.getElementById('id_googleId').value=id;
           document.getElementById("submit").disabled = false;
 })
 }

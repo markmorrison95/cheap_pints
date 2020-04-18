@@ -35,9 +35,8 @@ Home
                         var userLocation = lat+','+lng;
                         window.location.href = 'bars/'+userLocation+'/';
                     } else {
-                        result = "Unable to find address: " + status;
+                        alert('Unable to locate postcode')
                     }
-                    storeResult(result);
                     });
                 }
 </script>

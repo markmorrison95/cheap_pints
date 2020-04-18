@@ -1,7 +1,7 @@
 from django.urls import path
 from cheap_pints import views
 from cheap_pints.views import AddBar
-app_name = 'macro_mate'
+app_name = 'cheap_pints'
 
 urlpatterns = [
     path('', views.index, name='index'),
