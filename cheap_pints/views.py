@@ -84,22 +84,34 @@ class AddBar(View):
         barForm = BarForm(request.POST)
         beerForm = BeerForm(request.POST)
         pintPriceForm = PintPriceForm(request.POST)
+        barExists = True
+        beerExists = True
+        print(barForm['googleId'])
+        try:
+            bar = Bar.objects.get(googleId=request.POST.get('googleId'))
+        except Bar.DoesNotExist:
+            barExists = False
 
-        if barForm.is_valid() and beerForm.is_valid() and pintPriceForm.is_valid():
-            bar = barForm.save(commit=False)
-            key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
-            placeId = bar.googleId
-            response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + key)
-            photo = response.json()
-            ref =  extract_values(photo,'photo_reference')
-            bar.image_reference = ref[0]
-            try:
-                beer = Beer.objects.get(BeerName=beerForm['BeerName'])
-            except Beer.DoesNotExist:
-                beer = beerForm.save(commit=False)
+        try:
+            beer = Beer.objects.get(BeerName=request.POST.get('BeerName'))
+        except Beer.DoesNotExist:
+            beerExists = False
+
+        if (barExists or barForm.is_valid()) and (beerExists or beerForm.is_valid()) and pintPriceForm.is_valid():
+            if not barExists:
+                bar = barForm.save(commit=False)
+                key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+                placeId = bar.googleId
+                response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + key)
+                photo = response.json()
+                ref =  extract_values(photo,'photo_reference')
+                bar.image_reference = ref[0]
+                bar.save()
+
+            if not beerExists:
+                beer = beerForm.save()
+
             pintPrice = pintPriceForm.save(commit=False)
-            beer.save()
-            bar.save()
             pintPrice.bar = bar
             pintPrice.beer = beer
             pintPrice.save()
