@@ -27,21 +27,33 @@ Add New Bar
                 Information
             </h2>
             {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
+            {% for hidden in BarForm.hidden_fields %}
                 {{ hidden }}
             {% endfor %}
             <br>
             <div>
-                {{ form.barName.label }}
-                {{ form.barName.errors }}
-                {{ form.barName }}
+                {{ BarForm.barName.label }}
+                {{ BarForm.barName.errors }}
+                {{ BarForm.barName }}
             </div>
             <br>
             <div>
-                {{ form.price.label }}
-                {{ form.price.errors }}
-                {{ form.price_unit }}
-                {{ form.price }}
+                {{ BeerForm.BeerName.label }}
+                {{ BeerForm.BeerName.errors }}
+                {{ BeerForm.BeerName }}
+            </div>
+            <br>
+            <div>
+                {{ BeerForm.BeerBrand.label }}
+                {{ BeerForm.BeerBrand.errors }}
+                {{ BeerForm.BeerBrand }}
+            </div>
+            <br>
+            <div>
+                {{ PintPriceForm.price.label }}
+                {{ PintPriceForm.price.errors }}
+                {{ PintPriceForm.price_unit }}
+                {{ PintPriceForm.price }}
             </div>
         </div>
 

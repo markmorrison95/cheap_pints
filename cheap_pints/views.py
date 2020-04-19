@@ -3,7 +3,7 @@ from django.views import View
 from django.views.generic.base import TemplateView
 from pip._vendor import requests
 from cheap_pints.models import Bar
-from cheap_pints.forms import PintPriceForm
+from cheap_pints.forms import BarForm, BeerForm, PintPriceForm
 from django.urls import reverse
 import json
 
@@ -61,10 +61,14 @@ class AddBar(View):
     def get(self, request, meal_id_slug=None):
         """ Display the form for adding / editing a meal """
 
-        form = PintPriceForm()
+        barForm = BarForm()
+        beerForm = BeerForm()
+        pintPriceForm = PintPriceForm()
 
         return render(request, self.TEMPLATE, context={
-            'form': form,
+            'BarForm': barForm,
+            'BeerForm': beerForm,
+            'PintPriceForm': pintPriceForm,
         })
 
 
@@ -72,7 +76,7 @@ class AddBar(View):
         """ Process the form submitted by the user """
 
         # If there's a meal slug, supply the instance
-        form = PintPriceForm(request.POST)
+        form = BarForm(request.POST)
 
         if form.is_valid():
             bar = form.save(commit=False)
