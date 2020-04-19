@@ -7,5 +7,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('bars/<str:value>/', views.barList, name='bars'),
     path('add_bar/', AddBar.as_view(), name='add_bar'),
-    path('auto/', views.google, name='google' ),
+    path('bar/<str:id>/', views.bar, name='bar' ),
 ]

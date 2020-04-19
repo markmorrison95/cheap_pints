@@ -34,7 +34,13 @@ def barList(request, value):
             'api_key':key}
     return render(request, template_name, context)
 
-
+def bar(request, id):
+    template = 'cheap_pints/bar.html'
+    key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+    bar = Bar.objects.get(googleId=id)
+    context = {'bar':bar,
+                'api_key':key}
+    return render(request, template, context)
 
 
 
