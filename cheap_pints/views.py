@@ -110,11 +110,16 @@ class AddBar(View):
 
             if not beerExists:
                 beer = beerForm.save()
-
-            pintPrice = pintPriceForm.save(commit=False)
-            pintPrice.bar = bar
-            pintPrice.beer = beer
-            pintPrice.save()
+            try:
+                pintPrice = PintPrice.objects.get(bar=bar,beer=beer)
+                pintPriceForm = PintPriceForm(request.POST,
+                            instance=pintPrice)
+                pintPrice = pintPriceForm.save()
+            except PintPrice.DoesNotExist:
+                pintPrice = pintPriceForm.save(commit=False)
+                pintPrice.bar = bar
+                pintPrice.beer = beer
+                pintPrice.save()
 
             # Redirect to my_meals page
             return redirect(reverse('cheap_pints:index'))

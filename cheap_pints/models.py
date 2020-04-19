@@ -67,5 +67,10 @@ class PintPrice(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     # The owning user
     # on_delete: When the user is deleted, all their meals are deleted
+
+
+    class Meta:
+        unique_together = (("beer", "bar"),)
+
     def __str__(self): 
         return self.bar.barName + ': ' + self.beer.BeerName

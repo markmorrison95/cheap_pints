@@ -31,7 +31,7 @@ class BeerForm(forms.ModelForm):
     BeerBrand = forms.CharField(help_text="Enter the Beer Brand (Optional)",
                             widget=forms.TextInput(attrs={'placeholder': '(Optional)'}),
                             max_length=Bar.NAME_MAX_LENGTH,
-                            label="Bar Brand:",
+                            label="Beer Brand:",
                            required=False)
 
     class Meta:
