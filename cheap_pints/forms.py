@@ -28,8 +28,8 @@ class BeerForm(forms.ModelForm):
                         label="Beer Name:",
                         required=True)
 
-    BeerBrand = forms.CharField(help_text="(Optional)",
-                            widget=forms.TextInput(attrs={'placeholder': 'Enter the Beer Brand (Optional)'}),
+    BeerBrand = forms.CharField(help_text="Enter the Beer Brand (Optional)",
+                            widget=forms.TextInput(attrs={'placeholder': '(Optional)'}),
                             max_length=Bar.NAME_MAX_LENGTH,
                             label="Bar Brand:",
                            required=False)
@@ -44,9 +44,9 @@ class PintPriceForm(forms.ModelForm):
 
     price = forms.FloatField(label="Pint Price:",
                                 required=True)
-    price_unit = forms.ChoiceField(initial=Bar.POUND,
-                                                required=True,
-                                                choices=Bar.PRICE_UNITS)
+    price_unit = forms.ChoiceField(initial=PintPrice.POUND,
+                                    required=True,
+                                    choices=PintPrice.PRICE_UNITS)
     class Meta:
         model = PintPrice
         fields = ('price', 'price_unit')
