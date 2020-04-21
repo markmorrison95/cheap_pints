@@ -2,8 +2,8 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic.base import TemplateView
 from pip._vendor import requests
-from cheap_pints.models import Bar
-from cheap_pints.forms import PintPriceForm
+from cheap_pints.models import Bar, Beer, PintPrice
+from cheap_pints.forms import BarForm, BeerForm, PintPriceForm
 from django.urls import reverse
 import json
 
@@ -33,6 +33,19 @@ def barList(request, value):
     context = {'bars':bars,
             'api_key':key}
     return render(request, template_name, context)
+
+def bar(request, id):
+    template = 'cheap_pints/bar.html'
+    key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+    bar = Bar.objects.get(googleId=id)
+    beers = PintPrice.objects.filter(bar=bar)
+    context = {'bar':bar,
+                'beers':beers,
+                'api_key':key}
+    return render(request, template, context)
+
+
+
 def extract_values(obj, key):
     """Pull all values of specified key from nested JSON."""
     arr = []
@@ -61,10 +74,14 @@ class AddBar(View):
     def get(self, request, meal_id_slug=None):
         """ Display the form for adding / editing a meal """
 
-        form = PintPriceForm()
+        barForm = BarForm()
+        beerForm = BeerForm()
+        pintPriceForm = PintPriceForm()
 
         return render(request, self.TEMPLATE, context={
-            'form': form,
+            'BarForm': barForm,
+            'BeerForm': beerForm,
+            'PintPriceForm': pintPriceForm,
         })
 
 
@@ -72,25 +89,58 @@ class AddBar(View):
         """ Process the form submitted by the user """
 
         # If there's a meal slug, supply the instance
-        form = PintPriceForm(request.POST)
+        barForm = BarForm(request.POST)
+        beerForm = BeerForm(request.POST)
+        pintPriceForm = PintPriceForm(request.POST)
+        barExists = True
+        beerExists = True
+        print(barForm['googleId'])
+        try:
+            bar = Bar.objects.get(googleId=request.POST.get('googleId'))
+        except Bar.DoesNotExist:
+            barExists = False
 
-        if form.is_valid():
-            bar = form.save(commit=False)
-            key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
-            placeId = bar.googleId
-            response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + key)
-            photo = response.json()
-            ref =  extract_values(photo,'photo_reference')
-            bar.image_reference = ref[0]
-            print(ref)
-            bar.save()
+        try:
+            beer = Beer.objects.get(BeerName=request.POST.get('BeerName'))
+        except Beer.DoesNotExist:
+            beerExists = False
+
+        if (barExists or barForm.is_valid()) and (beerExists or beerForm.is_valid()) and pintPriceForm.is_valid():
+            if not barExists:
+                bar = barForm.save(commit=False)
+                key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+                placeId = bar.googleId
+                response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + key)
+                photo = response.json()
+                ref =  extract_values(photo,'photo_reference')
+                bar.image_reference = ref[0]
+                bar.save()
+
+            if not beerExists:
+                beer = beerForm.save()
+            try:
+                pintPrice = PintPrice.objects.get(bar=bar,beer=beer)
+                pintPriceForm = PintPriceForm(request.POST,
+                            instance=pintPrice)
+                pintPrice = pintPriceForm.save()
+            except PintPrice.DoesNotExist:
+                pintPrice = pintPriceForm.save(commit=False)
+                pintPrice.bar = bar
+                pintPrice.beer = beer
+                pintPrice.save()
 
             # Redirect to my_meals page
-            return redirect(reverse('cheap_pints:index'))
+            return redirect(reverse('cheap_pints:bar', kwargs={'id':bar.googleId}))
 
         else:
-            print(form.errors)
-            return render(request, self.TEMPLATE, context={'form': form})
+            print(pintPriceForm.errors)
+            print(barForm.errors)
+            print(beerForm.errors)
+            return render(request, self.TEMPLATE, context={
+            'BarForm': barForm,
+            'BeerForm': beerForm,
+            'PintPriceForm': pintPriceForm,
+        })
 
 
 # url to get info from place_id
