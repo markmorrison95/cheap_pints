@@ -130,7 +130,7 @@ class AddBar(View):
                 pintPrice.save()
 
             # Redirect to my_meals page
-            return redirect(reverse('cheap_pints:index'))
+            return redirect(reverse('cheap_pints:bar', kwargs={'id':bar.googleId}))
 
         else:
             print(pintPriceForm.errors)
