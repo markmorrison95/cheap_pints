@@ -68,9 +68,11 @@ class PintPrice(models.Model):
     # The owning user
     # on_delete: When the user is deleted, all their meals are deleted
 
-
     class Meta:
         unique_together = (("beer", "bar"),)
 
     def __str__(self): 
         return self.bar.barName + ': ' + self.beer.BeerName
+    
+    def price_unit_verbose(self):
+        return dict(PintPrice.PRICE_UNITS)[self.price_unit]

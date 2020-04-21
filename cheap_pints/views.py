@@ -38,7 +38,9 @@ def bar(request, id):
     template = 'cheap_pints/bar.html'
     key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
     bar = Bar.objects.get(googleId=id)
+    beers = PintPrice.objects.filter(bar=bar)
     context = {'bar':bar,
+                'beers':beers,
                 'api_key':key}
     return render(request, template, context)
 
