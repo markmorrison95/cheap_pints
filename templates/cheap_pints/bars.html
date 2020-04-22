@@ -1,8 +1,9 @@
 {% extends 'cheap_pints/base.html' %}
 {% load staticfiles %}
 {% block js %}
-<script>
-</script>
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/bars.css' %}">
 {% endblock %}
 
 {% block title_block %}
@@ -16,29 +17,30 @@ Bars Near Me
 {% block body_block %}
 
 {% comment %} If the bars exist, display everything {% endcomment %}
-{% if bars %}
+{% if PintPrices %}
 <div class="row">
     <div class="col-xs-12 col-md-8 order-1 order-md-2">
         <div class="row">
-            {% for bar in bars %}
+            {% for PintPrice in PintPrices %}
             <div class="col-6 col-lg-4 mb-4">
                 <div class="card-deck">
-                    <a class="card-link" href="{% url 'cheap_pints:bar' id=bar.googleId %}"/>
+                    <a class="card-link" href="{% url 'cheap_pints:bar' id=PintPrice.bar.googleId %}"/>
                         <div class="card">
+                            <h3 class="h5 card-header">{{ PintPrice.bar.barName }}</h3>
                             <img class="card-img-top"
-                                {% if bar.image_reference %}
-                                src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ bar.image_reference }}&key={{ api_key }}"
+                                {% if PintPrice.bar.image_reference %}
+                                src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ PintPrice.bar.image_reference }}&key={{ api_key }}"
                                 {% else %}
                                 src="https://cdn.pixabay.com/photo/2017/05/05/19/33/beer-2288121_1280.jpg"
                                 {% endif %}/>
                             <div class="card-body">
-                                <h3 class="h5 card-title">{{bar.barName}}</h3>
-                                <p class="card-text">Pint Price: {{bar.price_unit}}{{bar.price |floatformat:2 }}</p>
+                                <h5 class="card-text">Pint Price: {{ PintPrice.price_unit_verbose }}{{PintPrice.price |floatformat:2 }}</h5>
+                                <p class="card-text">Beer: {{ PintPrice.beer.BeerName }}</p>
                                 <div>
                                     <span class="badge badge-info">{{price}}</span>
                                 </div>
                                 <p class="card-text"><small class="text-muted">Last updated
-                                        {{bar.created_date}}</small>
+                                        {{PintPrice.created_date}}</small>
                                 </p>
                             </div>
                         </div>

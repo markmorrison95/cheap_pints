@@ -18,10 +18,11 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
-
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block css %}
+
     {% endblock %}
-    
+
 
 </head>
 
@@ -31,12 +32,17 @@
         class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-dark text-light box-shadow">
 
         {% comment %} App title, links to home {% endcomment %}
-        <img src="{% static 'images/icon.png' %}" width="65" height="65"/>
+        <img src="{% static 'images/icon.png' %}" width="50" height="50"/>
         <h2 class="my-0 mr-md-auto font-weight-bold d-flex">
             <a class="text-white" href="/cheap_pints/">
                 Cheap Pints
             </a>
         </h2>
+            <nav class="navbar">
+                    <form class="form-inline">
+                        <input class="form-control mr-sm-2" name="search" id="txtSearch" onkeyup="searchOpen()" type="search" placeholder="Search" aria-label="Search">
+                    </form>
+                </nav>
 
         <nav class="my-2 my-md-0 mr-md-3">
 
@@ -106,10 +112,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
     </script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"</script>
+
+    <script type="text/javascript" src="{% static 'js/base.js' %}"></script>
 
     {% comment %} A block so other templates can insert javascript to the correct place and not inline {% endcomment %}
     {% block js %}
     {% endblock %}
 </body>
-
+<script type="text/javascript" src="{% static 'js/base.js' %}"></script>
 </html>

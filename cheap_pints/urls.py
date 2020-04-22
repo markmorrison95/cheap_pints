@@ -8,4 +8,5 @@ urlpatterns = [
     path('bars/<str:value>/', views.barList, name='bars'),
     path('add_bar/', AddBar.as_view(), name='add_bar'),
     path('bar/<str:id>/', views.bar, name='bar' ),
+    path('search.json', views.autocompleteModel, name='autocomplete')
 ]

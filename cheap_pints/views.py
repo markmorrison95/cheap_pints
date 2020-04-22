@@ -5,9 +5,19 @@ from pip._vendor import requests
 from cheap_pints.models import Bar, Beer, PintPrice
 from cheap_pints.forms import BarForm, BeerForm, PintPriceForm
 from django.urls import reverse
+from django.http import HttpResponse
 import json
 
 # Create your views here.
+def autocompleteModel(request):
+    search_qs = Beer.objects.filter(BeerName__startswith=request.GET['search'])
+    results = []
+    for r in search_qs:
+        results.append(r.BeerName)
+    resp = request.GET['callback'] + '(' + json.dumps(results) + ');'
+    return HttpResponse(resp, content_type='application/json')
+
+
 def index(request):
     TEMPLATE = 'cheap_pints/index.html'
     response = render(request, TEMPLATE, context={})
@@ -28,10 +38,13 @@ def barList(request, value):
     nearby = response2.json()
     place_ids = extract_values(nearby, 'place_id')
     bars = []
+    PintPrices = []
     for place in place_ids:
         bars += Bar.objects.filter(googleId=place)
-    context = {'bars':bars,
-            'api_key':key}
+    for bar in bars:
+        PintPrices += PintPrice.objects.filter(bar=bar).order_by('price')[:1]
+    context = {'PintPrices':PintPrices,
+                'api_key':key}
     return render(request, template_name, context)
 
 def bar(request, id):
