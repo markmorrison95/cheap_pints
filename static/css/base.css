@@ -8,10 +8,6 @@
     color: #f2f2f2;
 }
 
-.ui-form-control {
-    z-index: 100;
-}
-
 input[type=search] {
     background: #555 url(http://hp-proliant.co.uk/qual_images/mob-search-icon.png) no-repeat 9px center;
     border: solid 1px #ccc;

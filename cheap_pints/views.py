@@ -10,10 +10,10 @@ import json
 
 # Create your views here.
 def autocompleteModel(request):
-    search_qs = Beer.objects.filter(BeerName__startswith=request.GET['search'])
+    search_qs = Bar.objects.filter(barName__icontains=request.GET['search'])
     results = []
     for r in search_qs:
-        results.append(r.BeerName)
+        results.append(r.barName)
     resp = request.GET['callback'] + '(' + json.dumps(results) + ');'
     return HttpResponse(resp, content_type='application/json')
 
