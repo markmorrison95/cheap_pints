@@ -23,7 +23,7 @@ Bars Near Me
             {% for bar in bars %}
             <div class="col-6 col-lg-4 mb-4">
                 <div class="card-deck">
-                    {% comment %} <a class="card-link" href="{% url 'macro_mate:meal' %}{{meal.id}}"> {% endcomment %}
+                    <a class="card-link" href="{% url 'cheap_pints:bar' id=bar.googleId }} %}"/>
                         <div class="card">
                             <img class="card-img-top"
                                 {% if bar.image_reference %}
