@@ -1,11 +1,18 @@
 {% extends 'cheap_pints/base.html' %}
 {% load staticfiles %}
 
+
 {% block title_block %}
 Home
 {% endblock %}
+{% block js %}
+<script src="{% static 'js/bar.js' %}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places&callback=initMap"
+        async defer></script>
+{% endblock %}
 
 {% block body_block %}
+<input type="hidden" id="barId" name="barId" value="{{ bar.googleId }}">
 <div class="jumbotron p-4">
     <div class="container">
         <div>
@@ -14,7 +21,7 @@ Home
             </h2>
         </div>
     </div>
-    </div>
+</div>
 <div class="container">
   <div class="row">
     <div class="col-sm-12 col-md-6">
@@ -77,50 +84,4 @@ Home
     <p>no prices added for this bar yet! </p>
     {% endif %}
 </div>
-
-    <script>
-      // This sample uses the Place Autocomplete widget to allow the user to search
-      // for and select a place. The sample then displays an info window containing
-      // the place ID and other information about the place that the user has
-      // selected.
-
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-      
-
-function initMap() {
-        var map = new google.maps.Map(document.getElementById('map-container-google-9'), {
-        center: new google.maps.LatLng(0, 0),
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        zoom: 15
-    });
-        google.maps.event.addListener(map, 'bounds_changed', function() {
-        var bounds = map.getBounds();
-        });
-        var service = new google.maps.places.PlacesService(map);
-        service.getDetails({
-        placeId: '{{ bar.googleId }}'
-    }, function (place, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-
-            // Create marker
-            var marker = new google.maps.Marker({
-                map: map,
-                position: place.geometry.location
-            });
-
-            // Center map on place location
-            map.setCenter(place.geometry.location);
-            google.maps.event.trigger(map , 'resize');
-            }
-        }
-      )}
-
-    
-</script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places&callback=initMap"
-        async defer></script>
-
 {% endblock %}

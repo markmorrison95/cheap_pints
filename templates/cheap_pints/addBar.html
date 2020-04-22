@@ -1,14 +1,17 @@
 {% extends 'cheap_pints/base.html' %}
 {% load staticfiles %}
-{% comment %} Add custom filters for form CSS below {% endcomment %}
-
-{% comment %} Include CSS and JS specific to this page (selectize.js / add_meal) {% endcomment %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM&libraries=places&callback=initAutocomplete"async defer></script>
+<script src="{% static 'js/add_bar.js' %}"></script>
 
 {% comment %} Page Title {% endcomment %}
 {% block title_block %}
 Add Bar
 {% endblock %}
+{% block js %}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM&libraries=places&callback=initAutocomplete"async defer></script>
+<script src="{% static 'js/add_bar.js' %}"></script>
 
+{% endblock %}
 {% comment %} Page Header {% endcomment %}
 {% block header_block %}
 Add New Bar
@@ -76,39 +79,4 @@ Add New Bar
     </style>
 
 </form>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM&libraries=places&callback=initAutocomplete"
-                async defer></script>
-<script>
-var autocomplete;
-
-function initAutocomplete() {
-   autocomplete = new google.maps.places.Autocomplete((document.getElementById('id_barName')),
-          {types: ['establishment']}
-   );
-   autocomplete.setFields(
-            ['place_id','name','photos']);
-
-autocomplete.addListener('place_changed', function() {
-          var place = autocomplete.getPlace();
-          if (!place.name) {
-            // User entered the name of a Place that was not suggested and
-            // pressed the Enter key, or the Place Details request failed.
-            window.alert("No details available for input: '" + place.name + "'");
-            return;
-          }
-          // If the place has a geometry, then present it on a map.
-          var id = place.place_id
-          var name = place.name;
-          console.log(place.photos);
-          name = name.split(',')[0]
-          document.getElementById('id_barName').value=name;
-          document.getElementById('id_googleId').value=id;
-          document.getElementById("submit").disabled = false;
-})
-}
-
-
-</script>
-
 {% endblock %}
