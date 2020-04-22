@@ -113,7 +113,8 @@ class AddBar(View):
                 response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + key)
                 photo = response.json()
                 ref =  extract_values(photo,'photo_reference')
-                bar.image_reference = ref[0]
+                if len(ref)>0:
+                    bar.image_reference = ref[0]             
                 bar.save()
 
             if not beerExists:
