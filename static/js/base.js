@@ -18,5 +18,3 @@ function searchResult(data) {
         source: data
     });
 }
-// You pass-in jQuery and then alias it with the $-sign
-// So your internal code doesn't change

@@ -9,8 +9,7 @@ function getLocation() {
 function showPosition(position) {
     var lat = position.coords.latitude.toString();
     var lng = position.coords.longitude.toString();
-    var userLocation = lat + ',' + lng;
-    window.location.href = 'bars/' + userLocation + '/';
+    window.location.href = 'bars/?lat=' + lat + '&lng=' + lng;
 }
 
 function getLatLong() {
@@ -21,8 +20,7 @@ function getLatLong() {
         if (status == google.maps.GeocoderStatus.OK) {
             var lat = results[0].geometry.location.lat();
             var lng = results[0].geometry.location.lng();
-            var userLocation = lat + ',' + lng;
-            window.location.href = 'bars/' + userLocation + '/';
+            window.location.href = 'bars/?lat=' + lat + '&lng=' + lng;
         } else {
             alert('Unable to locate postcode')
         }

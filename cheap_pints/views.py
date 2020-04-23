@@ -10,12 +10,23 @@ import json
 
 # Create your views here.
 def autocompleteModel(request):
-    search_qs = Bar.objects.filter(barName__icontains=request.GET['search'])
-    results = []
-    for r in search_qs:
-        results.append(r.barName)
-    resp = request.GET['callback'] + '(' + json.dumps(results) + ');'
-    return HttpResponse(resp, content_type='application/json')
+    try: 
+        search_bar = request.GET['BarSearch']
+        bars = Bar.objects.filter(barName__iexact=search_bar)
+        if len(bars) == 1:
+            return redirect(reverse('cheap_pints:bar', kwargs={'id':bars[0].googleId}))
+        else:
+            search_bar=search_bar.replace(" ", "+")
+            return redirect('/cheap_pints/bars/?barname='+search_bar)
+
+    except:
+        search_qs = Bar.objects.filter(barName__icontains=request.GET['search'])
+        results = []
+        for r in search_qs:
+            results.append(r.barName)
+        resp = request.GET['callback'] + '(' + json.dumps(results) + ');'
+        return HttpResponse(resp, content_type='application/json')
+
 
 
 def index(request):
@@ -28,24 +39,38 @@ def google(request):
     response = render(request, TEMPLATE, context={})
     return response
 
-def barList(request, value):
-    TEMPLATE = 'cheap_pints/bars.html'
+def barList(request):
     template_name = 'cheap_pints/bars.html'
     key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
-    latlng = value
-    # latlng = str('55.873694,-4.283646') #value for bank street, use to force search area
-    response2 = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+ latlng +'&&type=bar&rankby=distance&key='+key)
-    nearby = response2.json()
-    place_ids = extract_values(nearby, 'place_id')
-    bars = []
-    PintPrices = []
-    for place in place_ids:
-        bars += Bar.objects.filter(googleId=place)
-    for bar in bars:
-        PintPrices += PintPrice.objects.filter(bar=bar).order_by('price')[:1]
-    context = {'PintPrices':PintPrices,
-                'api_key':key}
-    return render(request, template_name, context)
+    try:
+        barname = request.GET['barname']
+        barname=barname.replace("+", " ")
+        print(barname)
+        bars = Bar.objects.filter(barName__iexact=barname)
+        print(bars)
+        PintPrices = []
+        for bar in bars:
+            PintPrices += PintPrice.objects.filter(bar=bar).order_by('price')[:1]
+        context = {'PintPrices':PintPrices,
+                    'api_key':key}
+        return render(request, template_name, context)
+
+    except:
+        lat = request.GET['lat']
+        lng = request.GET['lng']
+        # latlng = str('55.873694,-4.283646') #value for bank street, use to force search area
+        response2 = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+lat +','+lng+'&&type=bar&rankby=distance&key='+key)
+        nearby = response2.json()
+        place_ids = extract_values(nearby, 'place_id')
+        bars = []
+        PintPrices = []
+        for place in place_ids:
+            bars += Bar.objects.filter(googleId=place)
+        for bar in bars:
+            PintPrices += PintPrice.objects.filter(bar=bar).order_by('price')[:1]
+        context = {'PintPrices':PintPrices,
+                    'api_key':key}
+        return render(request, template_name, context)
 
 def bar(request, id):
     template = 'cheap_pints/bar.html'
