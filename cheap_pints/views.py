@@ -107,7 +107,6 @@ class AddBar(View):
         pintPriceForm = PintPriceForm(request.POST)
         barExists = True
         beerExists = True
-        print(barForm['googleId'])
         try:
             bar = Bar.objects.get(googleId=request.POST.get('googleId'))
         except Bar.DoesNotExist:
