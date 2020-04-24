@@ -9,23 +9,6 @@ from django.http import HttpResponse
 import json
 
 # Create your views here.
-def autocompleteModel(request):
-    try: 
-        search_bar = request.GET['BarSearch']
-        bars = Bar.objects.filter(barName__iexact=search_bar)
-        if len(bars) == 1:
-            return redirect(reverse('cheap_pints:bar', kwargs={'id':bars[0].googleId}))
-        else:
-            search_bar=search_bar.replace(" ", "+")
-            return redirect('/cheap_pints/bars/?barname='+search_bar)
-
-    except:
-        search_qs = Bar.objects.filter(barName__icontains=request.GET['search'])
-        results = []
-        for r in search_qs:
-            results.append(r.barName)
-        resp = request.GET['callback'] + '(' + json.dumps(results) + ');'
-        return HttpResponse(resp, content_type='application/json')
 
 
 
@@ -45,9 +28,7 @@ def barList(request):
     try:
         barname = request.GET['barname']
         barname=barname.replace("+", " ")
-        print(barname)
         bars = Bar.objects.filter(barName__iexact=barname)
-        print(bars)
         PintPrices = []
         for bar in bars:
             PintPrices += PintPrice.objects.filter(bar=bar).order_by('price')[:1]
