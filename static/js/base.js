@@ -4,7 +4,7 @@ function searchOpen() {
         search: search
     };
     $.ajax({
-        url: '/cheap_pints/search/',
+        url: '/cheap_pints/barsearch/',
         data: data,
         dataType: 'jsonp',
         jsonp: 'callback',
@@ -15,6 +15,7 @@ function searchOpen() {
 
 function searchResult(data) {
     $("#txtSearch").autocomplete({
+        autoFocus: true,
         source: data
     });
 }

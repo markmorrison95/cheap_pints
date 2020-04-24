@@ -20,3 +20,49 @@ function initAutocomplete() {
         document.getElementById("submit").disabled = false;
     })
 }
+
+$("#id_BeerName").bind("keyup change", function searchBarName() {
+    var search = $('#id_BeerName').val()
+    var data = {
+        search: search
+    };
+    $.ajax({
+        url: '/cheap_pints/beernamesearch/',
+        data: data,
+        dataType: 'jsonp',
+        jsonp: 'callback',
+        jsonpCallback: 'beerSearchResult'
+    });
+})
+
+
+function beerSearchResult(data) {
+    console.log(data);
+    $("#id_BeerName").autocomplete({
+        autoFocus: true,
+        source: data
+    });
+}
+
+$("#id_BeerBrand").bind("keyup change", function searchBarName() {
+    var search = $('#id_BeerBrand').val()
+    var data = {
+        search: search
+    };
+    $.ajax({
+        url: '/cheap_pints/beerbrandsearch/',
+        data: data,
+        dataType: 'jsonp',
+        jsonp: 'callback',
+        jsonpCallback: 'beerBrandSearchResult'
+    });
+})
+
+
+function beerBrandSearchResult(data) {
+    console.log(data);
+    $("#id_BeerBrand").autocomplete({
+        autoFocus: true,
+        source: data
+    });
+}

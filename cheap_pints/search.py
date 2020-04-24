@@ -34,7 +34,7 @@ def autocompleteBeerNames(request):
     search_query = Beer.objects.filter(BeerName__icontains=request.GET['search'])
     results = []
     for r in search_query:
-        results.append(r.barName)
+        results.append(r.BeerName)
     resp = request.GET['callback'] + '(' + json.dumps(results) + ');'
     return HttpResponse(resp, content_type='application/json')
 
@@ -42,6 +42,6 @@ def autocompleteBeerBrands(request):
     search_query = Beer.objects.filter(BeerBrand__icontains=request.GET['search'])
     results = []
     for r in search_query:
-        results.append(r.barName)
+        results.append(r.BeerBrand)
     resp = request.GET['callback'] + '(' + json.dumps(results) + ');'
     return HttpResponse(resp, content_type='application/json')
