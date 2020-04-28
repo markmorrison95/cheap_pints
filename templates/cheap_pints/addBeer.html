@@ -1,0 +1,68 @@
+{% extends 'cheap_pints/base.html' %}
+{% load staticfiles %}
+
+
+{% block title_block %}
+Add Beer - {{ bar.barName}}
+{% endblock %}
+{% block js %}
+{% endblock %}
+
+{% block body_block %}
+<input type="hidden" id="barId" name="barId" value="{{ bar.googleId }}">
+    <div class="jumbotron p-4">
+        <div class="container">
+            <div>
+                <h2 class="h2">
+                    {{ bar.barName }}: Add Beer
+                </h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+        <div class="custom-column">
+            <form id="new_beer_form" enctype="multipart/form-data" method="post"
+                action="">
+                <div>
+                    {{ BeerForm.BeerName.label }}
+                    {{ BeerForm.BeerName.errors }}
+                    {{ BeerForm.BeerName }}
+                </div>
+                <br>
+                <div>
+                    {{ BeerForm.BeerBrand.label }}
+                    {{ BeerForm.BeerBrand.errors }}
+                    {{ BeerForm.BeerBrand }}
+                </div>
+                <br>
+                <div>
+                    {{ PintPriceForm.price.label }}
+                    {{ PintPriceForm.price.errors }}
+                    {{ PintPriceForm.price_unit }}
+                    {{ PintPriceForm.price }}
+                </div> 
+                    {% csrf_token %}
+                    <br/>
+                <div class="col-6 col-md-6 align-center">
+                    <input id="submit" class="btn btn-lg btn-block btn-primary" type="submit" name="submit" value="Add Beer"/>
+                </div>
+            </form>
+        </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+        <div class="custom-column"> 
+            <img class="card-img-top"
+                style="width: 100%;"
+                {% if bar.image_reference %}
+                src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ bar.image_reference }}&key={{ api_key }}"
+                {% else %}
+                src="https://cdn.pixabay.com/photo/2017/05/05/19/33/beer-2288121_1280.jpg"
+                {% endif %}>     
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

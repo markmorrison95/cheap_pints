@@ -162,5 +162,69 @@ class AddBar(View):
         })
 
 
+class AddBeer(View):
+    """ A view for a beer to and """
+
+    TEMPLATE = "cheap_pints/addBeer.html"
+    key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+
+    # @method_decorator(login_required)
+    def get(self, request, id):
+        """ Display the form for adding / editing a meal """
+
+        bar = Bar.objects.get(googleId=id)
+        beerForm = BeerForm()
+        pintPriceForm = PintPriceForm()
+
+        return render(request, self.TEMPLATE, context={
+            'bar': bar,
+            'BeerForm': beerForm,
+            'PintPriceForm': pintPriceForm,
+            'api_key': AddBeer.key,
+        })
+
+
+    def post(self, request, id):
+        """ Process the form submitted by the user """
+
+        # If there's a meal slug, supply the instance
+        bar = Bar.objects.get(googleId=id)
+        beerForm = BeerForm(request.POST)
+        pintPriceForm = PintPriceForm(request.POST)
+        beerExists = True
+        try:
+            beer = Beer.objects.get(BeerName=request.POST.get('BeerName'))
+        except Beer.DoesNotExist:
+            beerExists = False
+
+        if (beerExists or beerForm.is_valid()) and pintPriceForm.is_valid():
+            if not beerExists:
+                beer = beerForm.save()
+                
+            try:
+                pintPrice = PintPrice.objects.get(bar=bar,beer=beer)
+                pintPriceForm = PintPriceForm(request.POST,
+                            instance=pintPrice)
+                pintPrice = pintPriceForm.save()
+            except PintPrice.DoesNotExist:
+                pintPrice = pintPriceForm.save(commit=False)
+                pintPrice.bar = bar
+                pintPrice.beer = beer
+                pintPrice.save()
+
+            # Redirect to my_meals page
+            return redirect(reverse('cheap_pints:bar', kwargs={'id':bar.googleId}))
+
+        else:
+            print(pintPriceForm.errors)
+            print(beerForm.errors)
+            return render(request, self.TEMPLATE, context={
+            'bar': bar,
+            'BeerForm': beerForm,
+            'PintPriceForm': pintPriceForm,
+            'api_key': AddBeer.key,
+        })
+
+
 # url to get info from place_id
         # https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=name,rating,formatted_phone_number&key=YOUR_API_KEY

@@ -45,14 +45,19 @@ Home
     </div>
   </div>
 </div>
-<div class="jumbotron p-2">
-    <div class="container.container-fluid">
-        <div>
+<div class="jumbotron p-2 flex-column flex-md-row align-items-center p-3 px-md-4 box-shadow">
+        <div class="row">
+         <div class="col-md-6 text-left">
             <h2 class="h3">
                 Pints:
             </h2>
+            </div>
+             <div class="col-md-6 text-right">
+        <nav>
+            <a class="p-2 ml-2 btn btn-dark text-light" href="{% url 'cheap_pints:add_beer' id=bar.googleId %}"> Add Beer</a>
+        </nav>
         </div>
-    </div>
+        </div>
 </div>
 <div class="row">
 {% if beers %}
