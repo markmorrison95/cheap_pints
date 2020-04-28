@@ -11,14 +11,14 @@ Bars Near Me
 {% endblock %}
 
 {% block header_block %}
-Bars Near Me
+{{ search_type }}
 {% endblock %}
 
 {% block body_block %}
 
 {% comment %} If the bars exist, display everything {% endcomment %}
 {% if PintPrices %}
-<div class="row">
+<div class="row bg-dark">
     <div class="col-xs-12 col-md-8 order-1 order-md-2">
         <div class="row">
             {% for PintPrice in PintPrices %}

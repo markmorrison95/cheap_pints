@@ -33,7 +33,8 @@ def barList(request):
         for bar in bars:
             PintPrices += PintPrice.objects.filter(bar=bar).order_by('price')[:1]
         context = {'PintPrices':PintPrices,
-                    'api_key':key}
+                    'api_key':key,
+                    'search_type':'Bars Named '+barname+':'}
         return render(request, template_name, context)
 
     except:
@@ -50,7 +51,8 @@ def barList(request):
         for bar in bars:
             PintPrices += PintPrice.objects.filter(bar=bar).order_by('price')[:1]
         context = {'PintPrices':PintPrices,
-                    'api_key':key}
+                    'api_key':key,
+                    'search_type':'Bars Near You:'}
         return render(request, template_name, context)
 
 def bar(request, id):

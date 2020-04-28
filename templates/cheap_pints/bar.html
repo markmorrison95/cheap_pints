@@ -13,12 +13,12 @@ Home
 
 {% block body_block %}
 <input type="hidden" id="barId" name="barId" value="{{ bar.googleId }}">
-<div class="jumbotron p-4">
-    <div class="container">
+<div class="jumbotron p-4 bg-dark">
+    <div class="container bg-dark">
         <div>
-            <h2 class="h2">
+            <h1 class="h1 text-white">
                 {{ bar.barName }}
-            </h2>
+            </h1>
         </div>
     </div>
 </div>
@@ -45,11 +45,12 @@ Home
     </div>
   </div>
 </div>
-<div class="jumbotron p-2 flex-column flex-md-row align-items-center p-3 px-md-4 box-shadow">
+<br/>
+<div class="jumbotron p-2 flex-column flex-md-row align-items-center p-3 px-md-4 box-shadow bg-dark">
         <div class="row">
-         <div class="col-md-6 text-left">
-            <h2 class="h3">
-                Pints:
+         <div class="col-md-6 text-left bg-dark">
+            <h2 class="h2 text-white">
+                All Pints:
             </h2>
             </div>
              <div class="col-md-6 text-right">
