@@ -55,7 +55,7 @@ def barList(request):
                     'search_type':'Bars Near You:'}
         return render(request, template_name, context)
 
-def bar(request, id, barname_slug):
+def bar(request, id):
     template = 'cheap_pints/bar.html'
     key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
     bar = Bar.objects.get(googleId=id)
@@ -160,7 +160,7 @@ class AddBar(View):
                 pintPrice.save()
 
             # Redirect to my_meals page
-            return redirect(reverse('cheap_pints:bar', kwargs={'barname_slug':bar.slug,'id':bar.googleId}))
+            return redirect(reverse('cheap_pints:bar', kwargs={'id':bar.googleId}))
 
         else:
             print(pintPriceForm.errors)

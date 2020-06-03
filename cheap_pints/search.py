@@ -17,8 +17,7 @@ def autocompleteBars(request):
         search_query = request.GET['BarSearch']
         bars = Bar.objects.filter(barName__iexact=search_query)
         if len(bars) == 1:
-            return redirect(reverse('cheap_pints:bar', kwargs={'id':bars[0].googleId,
-                                                                'slug':bars[0].slug}))
+            return redirect(reverse('cheap_pints:bar', kwargs={'id':bars[0].googleId}))
         else:
             search_query=search_query.replace(" ", "+")
             return redirect('/cheap_pints/bars/?barname='+search_query)

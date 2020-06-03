@@ -31,12 +31,12 @@ class Bar(models.Model):
     image_reference = models.CharField(max_length=URL_MAX_LENGTH, blank=True)
     # Date and time created
     created_date = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(unique=True)
+    # slug = models.SlugField(unique=True)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
     # The owning user
     # on_delete: When the user is deleted, all their meals are deleted
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.barName +'_'+ self.city.name)
+        # self.slug = slugify(self.barName +'_'+ self.city.name)
         super(Bar, self).save(*args,**kwargs)
 
 
