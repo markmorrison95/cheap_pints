@@ -1,5 +1,5 @@
 from django import forms
-from cheap_pints.models import Bar, Beer, PintPrice
+from cheap_pints.models import Bar, Beer, PintPrice, City
 
 
 class BarForm(forms.ModelForm):
@@ -17,10 +17,22 @@ class BarForm(forms.ModelForm):
                                 required=True,
                                 widget=forms.HiddenInput)
 
+
     class Meta:
         model = Bar
         fields = ('barName','googleId')
 
+
+class CityForm(forms.ModelForm):
+    city = forms.CharField(max_length = 200,
+                            required=True,
+                            label="Location/City:",
+                            widget=forms.TextInput(attrs={'placeholder': 'Enter City Name',
+                                                        'autocomplete':'off'}))
+
+    class Meta:
+        model = City
+        fields = ('city',)
 
 class BeerForm(forms.ModelForm):
     BeerName = forms.CharField(help_text="Enter the Beer Name",

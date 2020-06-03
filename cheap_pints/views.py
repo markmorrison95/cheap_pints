@@ -2,8 +2,8 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic.base import TemplateView
 from pip._vendor import requests
-from cheap_pints.models import Bar, Beer, PintPrice
-from cheap_pints.forms import BarForm, BeerForm, PintPriceForm
+from cheap_pints.models import Bar, Beer, City, PintPrice
+from cheap_pints.forms import BarForm, BeerForm, CityForm, PintPriceForm
 from django.urls import reverse
 from django.http import HttpResponse
 import json
@@ -55,7 +55,7 @@ def barList(request):
                     'search_type':'Bars Near You:'}
         return render(request, template_name, context)
 
-def bar(request, id):
+def bar(request, id, barname_slug):
     template = 'cheap_pints/bar.html'
     key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
     bar = Bar.objects.get(googleId=id)
@@ -98,11 +98,13 @@ class AddBar(View):
         barForm = BarForm()
         beerForm = BeerForm()
         pintPriceForm = PintPriceForm()
+        cityForm = CityForm()
 
         return render(request, self.TEMPLATE, context={
             'BarForm': barForm,
             'BeerForm': beerForm,
             'PintPriceForm': pintPriceForm,
+            'CityForm':cityForm,
         })
 
 
@@ -113,6 +115,8 @@ class AddBar(View):
         barForm = BarForm(request.POST)
         beerForm = BeerForm(request.POST)
         pintPriceForm = PintPriceForm(request.POST)
+        cityForm = CityForm(request.POST)
+        print(request.POST)
         barExists = True
         beerExists = True
         try:
@@ -125,6 +129,10 @@ class AddBar(View):
         except Beer.DoesNotExist:
             beerExists = False
 
+        if cityForm.is_valid():
+            city, created = City.objects.get_or_create(name=request.POST.get('city'))
+        else:
+            print(cityForm.errors)
         if (barExists or barForm.is_valid()) and (beerExists or beerForm.is_valid()) and pintPriceForm.is_valid():
             if not barExists:
                 bar = barForm.save(commit=False)
@@ -134,7 +142,8 @@ class AddBar(View):
                 photo = response.json()
                 ref =  extract_values(photo,'photo_reference')
                 if len(ref)>0:
-                    bar.image_reference = ref[0]             
+                    bar.image_reference = ref[0]
+                bar.city = city      
                 bar.save()
 
             if not beerExists:
@@ -151,7 +160,7 @@ class AddBar(View):
                 pintPrice.save()
 
             # Redirect to my_meals page
-            return redirect(reverse('cheap_pints:bar', kwargs={'id':bar.googleId}))
+            return redirect(reverse('cheap_pints:bar', kwargs={'barname_slug':bar.slug,'id':bar.googleId}))
 
         else:
             print(pintPriceForm.errors)

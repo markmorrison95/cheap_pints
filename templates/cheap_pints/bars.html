@@ -24,7 +24,7 @@ Bars Near Me
             {% for PintPrice in PintPrices %}
             <div class="col-6 col-lg-4 mb-4">
                 <div class="card-deck">
-                    <a class="card-link" href="{% url 'cheap_pints:bar' id=PintPrice.bar.googleId %}"/>
+                    <a class="card-link" href="{% url 'cheap_pints:bar' id=PintPrice.bar.googleId slug=PintPrice.bar.slug %}"/>
                         <div class="card">
                             <h3 class="h5 card-header">{{ PintPrice.bar.barName }}</h3>
                             <img class="card-img-top"
