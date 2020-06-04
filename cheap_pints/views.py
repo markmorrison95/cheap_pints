@@ -14,8 +14,9 @@ from find_my_pint_project.settings import GOOGLE_APP_KEY
 
 
 def index(request):
+    key = GOOGLE_APP_KEY
     TEMPLATE = 'cheap_pints/index.html'
-    response = render(request, TEMPLATE, context={})
+    response = render(request, TEMPLATE, context={'api_key':key})
     return response
 
 def google(request):
@@ -91,6 +92,7 @@ class AddBar(View):
     """ A view for adding a meal to the database """
 
     TEMPLATE = "cheap_pints/addBar.html"
+    key = GOOGLE_APP_KEY
 
     # @method_decorator(login_required)
     def get(self, request, meal_id_slug=None):
@@ -102,6 +104,7 @@ class AddBar(View):
         cityForm = CityForm()
 
         return render(request, self.TEMPLATE, context={
+            'api_key': self.key,
             'BarForm': barForm,
             'BeerForm': beerForm,
             'PintPriceForm': pintPriceForm,
@@ -137,7 +140,6 @@ class AddBar(View):
         if (barExists or barForm.is_valid()) and (beerExists or beerForm.is_valid()) and pintPriceForm.is_valid():
             if not barExists:
                 bar = barForm.save(commit=False)
-                key = GOOGLE_APP_KEY
                 placeId = bar.googleId
                 response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + key)
                 photo = response.json()
@@ -168,6 +170,7 @@ class AddBar(View):
             print(barForm.errors)
             print(beerForm.errors)
             return render(request, self.TEMPLATE, context={
+            'api_key': self.key,
             'BarForm': barForm,
             'BeerForm': beerForm,
             'PintPriceForm': pintPriceForm,
