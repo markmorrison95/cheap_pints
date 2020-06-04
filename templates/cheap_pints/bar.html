@@ -19,6 +19,9 @@ Home
             <h1 class="h1 text-white">
                 {{ bar.barName }}
             </h1>
+            <h3 class="h3 text-white">
+            {{ bar.city.name }}
+            </h3>
         </div>
     </div>
 </div>
@@ -55,7 +58,7 @@ Home
             </div>
              <div class="col-md-6 text-right">
         <nav>
-            <a class="p-2 ml-2 btn btn-dark text-light" href="{% url 'cheap_pints:add_beer' id=bar.googleId %}"> Add Beer</a>
+            <a class="p-2 ml-2 btn btn-secondary text-light" href="{% url 'cheap_pints:add_beer' id=bar.googleId %}"> Add Beer</a>
         </nav>
         </div>
         </div>

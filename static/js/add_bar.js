@@ -66,3 +66,26 @@ function beerBrandSearchResult(data) {
         source: data
     });
 }
+
+$("#id_city").bind("keyup change", function searchCity() {
+    var search = $('#id_city').val()
+    var data = {
+        search: search
+    };
+    $.ajax({
+        url: '/cheap_pints/citysearch/',
+        data: data,
+        dataType: 'jsonp',
+        jsonp: 'callback',
+        jsonpCallback: 'CitySearchResult'
+    });
+})
+
+
+function CitySearchResult(data) {
+    console.log(data);
+    $("#id_city").autocomplete({
+        autoFocus: true,
+        source: data
+    });
+}

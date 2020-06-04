@@ -13,5 +13,6 @@ urlpatterns = [
     path('barsearch/', search.autocompleteBars, name='autocompleteBars'),
     path('beernamesearch/', search.autocompleteBeerNames, name='autocompleteBeerName'),
     path('beerbrandsearch/', search.autocompleteBeerBrands, name='autocompleteBeerBrands'),
+    path('citysearch/', search.autocompleteCity, name='autocompleteCity'),
     path('add_beer/<str:id>/', AddBeer.as_view(), name='add_beer'),
 ]

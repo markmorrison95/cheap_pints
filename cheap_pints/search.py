@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic.base import TemplateView
-from cheap_pints.models import Bar, Beer, PintPrice
+from cheap_pints.models import Bar, Beer, City, PintPrice
 from cheap_pints.forms import BarForm, BeerForm, PintPriceForm
 from django.urls import reverse
 from django.http import HttpResponse
@@ -43,5 +43,13 @@ def autocompleteBeerBrands(request):
     results = []
     for r in search_query:
         results.append(r.BeerBrand)
+    resp = request.GET['callback'] + '(' + json.dumps(results) + ');'
+    return HttpResponse(resp, content_type='application/json')
+
+def autocompleteCity(request):
+    search_query = City.objects.filter(name__icontains=request.GET['search'])
+    results = []
+    for r in search_query:
+        results.append(r.name)
     resp = request.GET['callback'] + '(' + json.dumps(results) + ');'
     return HttpResponse(resp, content_type='application/json')
