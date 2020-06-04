@@ -4,7 +4,7 @@ function searchOpen() {
         search: search
     };
     $.ajax({
-        url: '/cheap_pints/search.json',
+        url: '/cheap_pints/barsearch/',
         data: data,
         dataType: 'jsonp',
         jsonp: 'callback',
@@ -14,10 +14,8 @@ function searchOpen() {
 
 
 function searchResult(data) {
-    console.log(data);
     $("#txtSearch").autocomplete({
+        autoFocus: true,
         source: data
     });
 }
-// You pass-in jQuery and then alias it with the $-sign
-// So your internal code doesn't change

@@ -1,18 +1,10 @@
-{% extends 'cheap_pints/base.html' %}
-{% load staticfiles %}
-{% block title_block %}
-Home
- {% endblock %}
-{% block js %}
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?&key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM"></script>
+{% extends 'cheap_pints/base.html' %} {% load staticfiles %} {% block title_block %} Home {% endblock %} {% block js %}
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?&key={{ api_key }}"></script>
 <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
-{% endblock %}
-
-{% block body_block %}
+{% endblock %} {% block body_block %}
 
 <div class="jumbotron p-4">
     <div class="container">
-        <h1 class="jumbotron-heading">Cheap Pints</h1>
         <div>
             <h2 class="h2">
                 Find Cheap Pints Near Me!
@@ -27,20 +19,20 @@ Home
             <div class="card">
                 <div class="card-body">
                     <div>
-                    <blockquote class="blockquote">
-                        <p>Choose Your Location</p>
-                        <button type="button" class="btn btn-primary" onclick="getLocation();">Use Current Location</button>
-                        </div>
-                        </br>
-                        <div>
+                        <blockquote class="blockquote">
+                            <p>Choose Your Location</p>
+                            <button type="button" class="btn btn-primary" onclick="getLocation();">Use Current Location</button>
+                    </div>
+                    </br>
+                    <div>
                         <form>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">PostCode</label>
-                            <input type="PostCode" class="form-control" id="postcodeInputBox" aria-describedby="postCodeHelp" placeholder="Enter Your Postcode for Nearby Bars">
-                        </div>
-                        <button type="button" class="btn btn-primary" onclick="getLatLong();">Submit</button>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">PostCode</label>
+                                <input type="PostCode" class="form-control" id="postcodeInputBox" aria-describedby="postCodeHelp" placeholder="Enter Your Postcode for Nearby Bars">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="getLatLong();">Submit</button>
                         </form>
-                        </div>
+                    </div>
                     </blockquote>
                 </div>
             </div>

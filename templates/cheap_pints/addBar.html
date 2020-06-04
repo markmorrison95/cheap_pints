@@ -1,14 +1,12 @@
 {% extends 'cheap_pints/base.html' %}
 {% load staticfiles %}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM&libraries=places&callback=initAutocomplete"async defer></script>
-<script src="{% static 'js/add_bar.js' %}"></script>
 
 {% comment %} Page Title {% endcomment %}
 {% block title_block %}
 Add Bar
 {% endblock %}
 {% block js %}
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM&libraries=places&callback=initAutocomplete"async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&libraries=places&callback=initAutocomplete"async defer></script>
 <script src="{% static 'js/add_bar.js' %}"></script>
 
 {% endblock %}
@@ -38,6 +36,12 @@ Add New Bar
                 {{ BarForm.barName.label }}
                 {{ BarForm.barName.errors }}
                 {{ BarForm.barName }}
+            </div>
+            </br>
+            <div>
+                {{ CityForm.city.label }}
+                {{ CityForm.city.errors }}
+                {{ CityForm.city }}
             </div>
             <br>
             <div>
