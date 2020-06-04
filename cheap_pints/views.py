@@ -239,7 +239,3 @@ class AddBeer(View):
             'PintPriceForm': pintPriceForm,
             'api_key': AddBeer.key,
         })
-
-
-# url to get info from place_id
-        # https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJN1t_tDeuEmsRUsoyG83frY4&fields=name,rating,formatted_phone_number&key=YOUR_API_KEY

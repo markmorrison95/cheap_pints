@@ -25,7 +25,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'i(&#s!47v-&w=aov98-gr_=-70@4_7s-z16c!frdvqt!-s2yuj'
+SECRET_KEY = config('DJANGO_SECRET_KEY', default='')
 GOOGLE_APP_KEY = config('GOOGLE_APP_KEY', default='')
 
 # google_key = None
