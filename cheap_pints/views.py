@@ -7,6 +7,7 @@ from cheap_pints.forms import BarForm, BeerForm, CityForm, PintPriceForm
 from django.urls import reverse
 from django.http import HttpResponse
 import json
+from find_my_pint_project.settings import GOOGLE_APP_KEY
 
 # Create your views here.
 
@@ -24,7 +25,7 @@ def google(request):
 
 def barList(request):
     template_name = 'cheap_pints/bars.html'
-    key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+    key = GOOGLE_APP_KEY
     try:
         barname = request.GET['barname']
         barname=barname.replace("+", " ")
@@ -57,7 +58,7 @@ def barList(request):
 
 def bar(request, id):
     template = 'cheap_pints/bar.html'
-    key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+    key = GOOGLE_APP_KEY
     bar = Bar.objects.get(googleId=id)
     beers = PintPrice.objects.filter(bar=bar)
     context = {'bar':bar,
@@ -136,7 +137,7 @@ class AddBar(View):
         if (barExists or barForm.is_valid()) and (beerExists or beerForm.is_valid()) and pintPriceForm.is_valid():
             if not barExists:
                 bar = barForm.save(commit=False)
-                key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+                key = GOOGLE_APP_KEY
                 placeId = bar.googleId
                 response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + key)
                 photo = response.json()
@@ -177,7 +178,7 @@ class AddBeer(View):
     """ A view for a beer to and """
 
     TEMPLATE = "cheap_pints/addBeer.html"
-    key = 'AIzaSyBriJsnGZXUppVFg-q7cr2VpqHRmm7kczM'
+    key = GOOGLE_APP_KEY
 
     # @method_decorator(login_required)
     def get(self, request, id):
