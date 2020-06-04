@@ -141,7 +141,7 @@ class AddBar(View):
             if not barExists:
                 bar = barForm.save(commit=False)
                 placeId = bar.googleId
-                response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + key)
+                response = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id='+ placeId +'&fields=photo&key=' + self.key)
                 photo = response.json()
                 ref =  extract_values(photo,'photo_reference')
                 if len(ref)>0:
