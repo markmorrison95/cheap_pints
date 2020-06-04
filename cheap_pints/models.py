@@ -1,6 +1,12 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 
 # Create your models here.
+
+class City(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self): return self.name
 class Bar(models.Model):
 
     """A model for a print price."""
@@ -25,8 +31,15 @@ class Bar(models.Model):
     image_reference = models.CharField(max_length=URL_MAX_LENGTH, blank=True)
     # Date and time created
     created_date = models.DateTimeField(auto_now_add=True)
+    # slug = models.SlugField(unique=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
     # The owning user
     # on_delete: When the user is deleted, all their meals are deleted
+    def save(self, *args, **kwargs):
+        # self.slug = slugify(self.barName +'_'+ self.city.name)
+        super(Bar, self).save(*args,**kwargs)
+
+
     def __str__(self): return self.barName
 
 class Beer(models.Model):

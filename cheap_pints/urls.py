@@ -7,11 +7,12 @@ app_name = 'cheap_pints'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('bars/<str:value>/', views.barList, name='bars'),
+    path('bars/', views.barList, name='bars'),
     path('add_bar/', AddBar.as_view(), name='add_bar'),
     path('bar/<str:id>/', views.bar, name='bar' ),
     path('barsearch/', search.autocompleteBars, name='autocompleteBars'),
     path('beernamesearch/', search.autocompleteBeerNames, name='autocompleteBeerName'),
     path('beerbrandsearch/', search.autocompleteBeerBrands, name='autocompleteBeerBrands'),
-    path('add_beer/<slug:barname_slug>/<str:id>/', AddBeer.as_view(), name='add_beer'),
+    path('citysearch/', search.autocompleteCity, name='autocompleteCity'),
+    path('add_beer/<str:id>/', AddBeer.as_view(), name='add_beer'),
 ]
