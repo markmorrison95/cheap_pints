@@ -15,7 +15,7 @@ class BarForm(forms.ModelForm):
 
     googleId = forms.CharField(max_length=Bar.NAME_MAX_LENGTH, 
                                 required=True,
-                                widget=forms.HiddenInput)
+                                widget=forms.HiddenInput(attrs={'autocomplete':'off'}))
 
 
     class Meta:
@@ -25,10 +25,11 @@ class BarForm(forms.ModelForm):
 
 class CityForm(forms.ModelForm):
     city = forms.CharField(max_length = 200,
+                            widget=forms.TextInput(attrs={'placeholder': 'Enter City Name',
+                                                        'autocomplete':'off'}),
                             required=True,
                             label="Location/City:",
-                            widget=forms.TextInput(attrs={'placeholder': 'Enter City Name',
-                                                        'autocomplete':'off'}))
+                            )
 
     class Meta:
         model = City
