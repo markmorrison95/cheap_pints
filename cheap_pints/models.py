@@ -9,7 +9,7 @@ class City(models.Model):
     def __str__(self): return self.name
 class Bar(models.Model):
 
-    """A model for a print price."""
+    """A model for a print price. Currency types are predefined."""
 
     NAME_MAX_LENGTH = 128
     URL_MAX_LENGTH = 255

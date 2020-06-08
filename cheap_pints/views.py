@@ -16,17 +16,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def index(request):
+    """Home Page"""
     key = GOOGLE_APP_KEY
     TEMPLATE = 'cheap_pints/index.html'
     response = render(request, TEMPLATE, context={'api_key':key})
     return response
 
-def google(request):
-    TEMPLATE = 'cheap_pints/geolocation.html'
-    response = render(request, TEMPLATE, context={})
-    return response
-
 def barList(request):
+    """The page for displaying multiple bars. Checks to see if the request contains
+    a key of barname in which case it is a search so renders the bars based on the searched name.
+    
+    If the request does not contain the key barname then must be a location search so performs
+    a google api request with the lat and lng given  and renders response based on bars returned by
+    the api request.
+    
+    API request sometimes unreliable, may be params given. Need to test."""
     template = 'cheap_pints/bars.html'
     key = GOOGLE_APP_KEY
     try:
@@ -60,6 +64,7 @@ def barList(request):
         return render(request, template, context)
 
 def bar(request, id):
+    """Page for showing individual bar info"""
     template = 'cheap_pints/bar.html'
     key = GOOGLE_APP_KEY
     bar = Bar.objects.get(googleId=id)
@@ -91,7 +96,7 @@ def extract_values(obj, key):
     return results
 
 class AddBar(LoginRequiredMixin, View):
-    """ A view for adding a meal to the database """
+    """ A view for adding a bar to the database, requires a user to be logged in """
 
     TEMPLATE = "cheap_pints/addBar.html"
     key = GOOGLE_APP_KEY
@@ -115,9 +120,10 @@ class AddBar(LoginRequiredMixin, View):
 
 
     def post(self, request):
-        """ Process the form submitted by the user """
+        """ Process the form submitted by the user. Sort of complicated way of handling request as
+        it tries to work out if different components already exist in the database"""
 
-        # If there's a meal slug, supply the instance
+        # If there's a meal slug, supply the instace
         barForm = BarForm(request.POST)
         beerForm = BeerForm(request.POST)
         pintPriceForm = PintPriceForm(request.POST)
@@ -180,14 +186,14 @@ class AddBar(LoginRequiredMixin, View):
 
 
 class AddBeer(LoginRequiredMixin, View):
-    """ A view for a beer to and """
+    """ A view for a a beer to a prexisting bar """
 
     TEMPLATE = "cheap_pints/addBeer.html"
     key = GOOGLE_APP_KEY
 
     # @method_decorator(login_required)
     def get(self, request, id):
-        """ Display the form for adding / editing a meal """
+        """ Display the form for adding / editing a beer """
 
         bar = Bar.objects.get(googleId=id)
         beerForm = BeerForm()
