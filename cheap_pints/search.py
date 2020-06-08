@@ -10,7 +10,10 @@ import json
 
 
 
-
+""" All these methods are used for search and autocomplete. Performed via ajax request 
+and if defnite result defined is passed to appropriate method in views. Search criteria should
+be obvious from method name.
+ """
 
 def autocompleteBars(request):
     try: 
