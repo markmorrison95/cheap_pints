@@ -17,10 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import path, include, re_path
 from cheap_pints import views
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('cheap_pints/', include('cheap_pints.urls')),
-    path('accounts/', include('allauth.urls')),
+    url(r'accounts/', include('allauth.urls')),
 ]

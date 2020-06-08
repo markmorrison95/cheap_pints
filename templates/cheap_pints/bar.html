@@ -1,4 +1,4 @@
-{% extends 'cheap_pints/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 
@@ -11,7 +11,7 @@ Home
         async defer></script>
 {% endblock %}
 
-{% block body_block %}
+{% block content %}
 <input type="hidden" id="barId" name="barId" value="{{ bar.googleId }}">
 <div class="jumbotron p-4 bg-dark">
     <div class="container bg-dark">
@@ -57,9 +57,6 @@ Home
             </h2>
             </div>
              <div class="col-md-6 text-right">
-        <nav>
-            <a class="p-2 ml-2 btn btn-secondary text-light" href="{% url 'cheap_pints:add_beer' id=bar.googleId %}"> Add Beer</a>
-        </nav>
         </div>
         </div>
 </div>
@@ -87,6 +84,18 @@ Home
                 </div>
             </div>
             {% endfor %}
+             <div class="col-6 col-lg-4 mb-4">
+                <div class="card-deck">
+                    {% comment %} <a class="card-link" href="{% url 'macro_mate:meal' %}{{meal.id}}"> {% endcomment %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="h5 card-title">Add a New Beer:</h3>
+                                <a class="p-2 ml-2 btn btn-primary text-light " href="{% url 'cheap_pints:add_beer' id=bar.googleId %}"> Add Pint Price</a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     {% else %}

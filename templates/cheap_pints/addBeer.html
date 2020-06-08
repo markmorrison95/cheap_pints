@@ -1,4 +1,4 @@
-{% extends 'cheap_pints/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 
@@ -8,7 +8,7 @@ Add Beer - {{ bar.barName}}
 {% block js %}
 {% endblock %}
 
-{% block body_block %}
+{% block content %}
 <input type="hidden" id="barId" name="barId" value="{{ bar.googleId }}">
     <div class="jumbotron p-4">
         <div class="container">

@@ -1,4 +1,4 @@
-{% extends 'cheap_pints/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 
 {% comment %} Page Title {% endcomment %}
@@ -15,7 +15,7 @@ Add Bar
 Add New Bar
 {% endblock %}
 
-{% block body_block %}
+{% block content %}
 
 {% comment %} Form encapsulates whole view. Responsive layout. {% endcomment %}
 <form id="new_bar_form" enctype="multipart/form-data" method="post"
