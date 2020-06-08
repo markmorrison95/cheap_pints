@@ -9,6 +9,8 @@ from django.http import HttpResponse
 import json
 from find_my_pint_project.settings import GOOGLE_APP_KEY
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 # Create your views here.
 
 
@@ -25,7 +27,7 @@ def google(request):
     return response
 
 def barList(request):
-    template_name = 'cheap_pints/bars.html'
+    template = 'cheap_pints/bars.html'
     key = GOOGLE_APP_KEY
     try:
         barname = request.GET['barname']
@@ -37,7 +39,7 @@ def barList(request):
         context = {'PintPrices':PintPrices,
                     'api_key':key,
                     'search_type':'Bars Named '+barname+':'}
-        return render(request, template_name, context)
+        return render(request, template, context)
 
     except:
         lat = request.GET['lat']
@@ -55,7 +57,7 @@ def barList(request):
         context = {'PintPrices':PintPrices,
                     'api_key':key,
                     'search_type':'Bars Near You:'}
-        return render(request, template_name, context)
+        return render(request, template, context)
 
 def bar(request, id):
     template = 'cheap_pints/bar.html'
@@ -88,7 +90,7 @@ def extract_values(obj, key):
     results = extract(obj, arr, key)
     return results
 
-class AddBar(View):
+class AddBar(LoginRequiredMixin, View):
     """ A view for adding a meal to the database """
 
     TEMPLATE = "cheap_pints/addBar.html"
@@ -177,7 +179,7 @@ class AddBar(View):
         })
 
 
-class AddBeer(View):
+class AddBeer(LoginRequiredMixin, View):
     """ A view for a beer to and """
 
     TEMPLATE = "cheap_pints/addBeer.html"

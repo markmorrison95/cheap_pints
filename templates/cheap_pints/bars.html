@@ -1,4 +1,4 @@
-{% extends 'cheap_pints/base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 {% block js %}
 {% endblock %}
@@ -14,7 +14,7 @@ Bars Near Me
 {{ search_type }}
 {% endblock %}
 
-{% block body_block %}
+{% block content %}
 
 {% comment %} If the bars exist, display everything {% endcomment %}
 {% if PintPrices %}
@@ -24,7 +24,7 @@ Bars Near Me
             {% for PintPrice in PintPrices %}
             <div class="col-6 col-lg-4 mb-4">
                 <div class="card-deck">
-                    <a class="card-link" href="{% url 'cheap_pints:bar' id=PintPrice.bar.googleId slug=PintPrice.bar.slug %}"/>
+                    <a class="card-link" href="{% url 'cheap_pints:bar' id=PintPrice.bar.googleId%}"/>
                         <div class="card">
                             <h3 class="h5 card-header">{{ PintPrice.bar.barName }}</h3>
                             <img class="card-img-top"
@@ -39,9 +39,6 @@ Bars Near Me
                                 <div>
                                     <span class="badge badge-info">{{price}}</span>
                                 </div>
-                                <p class="card-text"><small class="text-muted">Last updated
-                                        {{PintPrice.created_date}}</small>
-                                </p>
                             </div>
                         </div>
                     </a>
